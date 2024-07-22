@@ -1,0 +1,96 @@
+{
+	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {
+				// "navigationStyle": "custom"
+				// "disableScroll": true,
+				"onReachBottomDistance": 150, 
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/production/production",
+			"style": {
+				"navigationBarTitleText": "作品"
+			}
+		},
+		{
+			"path": "pages/publish/publish",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{ 
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "消息中心",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path" : "subpkg/detail/detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "subpkg/webview/webview",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	},
+	"tabBar": {
+		"selectedColor": "#c00000",
+		"list": [
+			{
+				"pagePath": "pages/home/home",
+				"text": "首页"
+				// "iconPath": "static/tabbar-icons/home.png",
+				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+			},
+			{
+				"pagePath": "pages/production/production",
+				"text": "作品"
+				// "iconPath": "static/tabbar-icons/home.png",
+				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+			},
+			{
+				"pagePath": "pages/publish/publish",
+				"text": "发布"
+				// "iconPath": "static/tabbar-icons/home.png",
+				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+			},
+			{
+				"pagePath": "pages/message/message",
+				"text": "消息"
+				// "iconPath": "static/tabbar-icons/home.png",
+				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+			},
+			{
+				"pagePath": "pages/mine/mine",
+				"text": "我的"
+				// "iconPath": "static/tabbar-icons/home.png",
+				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+			}
+		]
+	}
+}
