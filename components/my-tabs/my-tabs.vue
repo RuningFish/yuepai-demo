@@ -2,6 +2,7 @@
 	<scroll-view class="tab-scroll" scroll-x="true">
 		<view :style="{'line-height':tabHeight + 'px'}" class="tab-item"  v-for="(item,index) in tabList" :key="index" @click="itemIndexChange(index)">
 			<view :class="selectedIndex === index ? 'active-title' : 'normal-title'"> {{item}}</view>
+				<!-- <view class="bottom-line" v-if="index === selectedIndex"></view> -->
 		</view>
 	</scroll-view>
 	<!-- <swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange">
@@ -44,10 +45,10 @@
 		},
 
 		methods: {
-			tabChange(e){
-				let index = e.target.current || e.detail.current
-				this.itemIndexChange(index)
-			},
+			// tabChange(e){
+			// 	let index = e.target.current || e.detail.current
+			// 	this.itemIndexChange(index)
+			// },
 			
 			itemIndexChange(index) {
 				if (this.selectedIndex !== index) {
@@ -71,21 +72,25 @@
 	}
 
 	.tab-item {
-		font-size: 14px;
+		font-size: 28rpx;
 		color: rgb(205, 205, 205);
 		// line-height: 40px;
 		display: inline-block;
 		margin-left: 10px;
 		margin-right: 10px;
+		flex-wrap: nowrap;
+		align-items: center;
 	}
 
 	.active-title {
-		font-size: 15px;
+		font-size: 30rpx;
 		color: #333333;
+		border-bottom: 2px solid #dc6067;
 	}
 
 	.tab {
 		width: 100%;
 		display: flex;
 	}
+	
 </style>
