@@ -1,6 +1,6 @@
 <template>
 	<!-- 选项卡 -->
-	<my-tabs :currentIndex="selectedIndex" @tabIndexChange="tabIndexChange" :tabList="tabList"></my-tabs>
+	<my-tabs ref="myTabs" :currentIndex="selectedIndex" @tabIndexChange="tabIndexChange" :tabList="tabList"></my-tabs>
 		<!-- 滚动组件 -->
 		<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange" :style="{height:windowHeight +'px'}">
 			<swiper-item class="home-swiper-item" v-for="(item,index) in tabList" :key="index">
@@ -79,11 +79,6 @@
 			
 			const info = uni.getSystemInfoSync()
 			this.windowHeight = info.windowHeight-40
-			console.log('text---',this.windowHeight);
-			// console.log('当前存储的城市信息---',this.current_city_name,'===',this.current_city_code,'000');
-			console.log('当前存储的城市信息---',this.$store.state.current_city_name,'===',this.$store.state.current_city_code,'000');
-			
-			this.storeLog()
 		},
 				
 		methods:{
@@ -153,7 +148,7 @@
 				let index = e.target.current || e.detail.current
 				console.log('tabChange---');
 				if(this.selectedIndex === index) return
-				this.tabIndexChange(index)
+				this.$refs.myTabs.itemIndexChange(index)
 			},
 			
 			//选项卡点击

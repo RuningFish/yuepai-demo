@@ -1,11 +1,12 @@
 <template>
-	<view class="detail-container" v-if="item">
+	<view class="detail-container" v-if="item.avatar">
 		<view class="info">
 			<view class="info-left">
 				<image :src="item.avatar" class="info-img"></image>
 				<view class="info-content">
 					<view class="name-content">
 						<view class="name">{{item.nickname}}</view>
+						<image class="sex" :src="item.sex === 1 ? '/static/icons/male.png':'/static/icons/female.png'">{{item.nickname}}</image>
 						<view class="uonlinetime">{{item.uonlinetime}}</view>
 					</view>
 					<view class="zhiye-content">
@@ -96,7 +97,7 @@
 				<view class="title-left">
 					<view>{{item.sex === 1?'他':'她'}}的作品</view>
 				</view>
-				<view class="title-right">{{item.sex === 1?'他':'她'}}的主页 ></view>
+				<view class="title-right" @click="gotoHomePage">{{item.sex === 1?'他':'她'}}的主页 ></view>
 			</view>
 			<view class="images">
 				<scroll-view class="image-scroll"  scroll-x="true">
@@ -210,6 +211,13 @@
 					current:index,
 					urls:images.map(img => img.bigurl)
 				})
+			},
+			//跳转个人主页
+			gotoHomePage(){
+				console.log("----------------gotoHomePage")
+				uni.navigateTo({
+					url:'/subpkg/userHomePage/userHomePage?user_id='+this.item.user_id
+				})
 			}
 		}
 	}
@@ -242,10 +250,16 @@
 
 				.name-content {
 					display: flex;
-
+					align-items: center;
 					.name {
 						// margin-top: 8px;
 						font-size: 14px;
+					}
+					
+					.sex{
+						width: 15px;
+						height: 15px;
+						margin-left: 3px;
 					}
 
 					.uonlinetime {

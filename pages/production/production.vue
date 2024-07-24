@@ -1,54 +1,58 @@
 <template>
 	<view class="production-container">
 		<!-- 选项卡 -->
-		<my-tabs :currentIndex="selectedIndex" @tabIndexChange="tabIndexChange" :tabList="tabList"></my-tabs>
-		<!-- 滚动组件 -->
-		<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
-			:style="{height:windowHeight +'px'}">
-			<swiper-item class="production-swiper-item" v-for="(item,index) in tabList" :key="index">
-				<scroll-view scroll-y="true" class="list-scroll" :style="{height:windowHeight +'px'}"
-					:refresher-triggered="triggered" @scrolltolower="scrolltolower" :lower-threshold="100"
-					refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh"
-					@refresherpulling="onPulling" :scroll-anchoring="true">
-					<!-- 列表数据 -->
-					<view class="production-list">
-						<view class="production-list-column" v-for="(item0,index0) in column_count" :key="index0">
-							<view class="list-column-item" v-for="(item,index) in recommendList[selectedIndex][index0]"
-								:key="index" @click="itemClick(item)">
-								<!-- 视频图片有先显示视频图片 -->
-								<block v-if="item.video_cover !== null && item.video_cover.length > 0">
-									<view class="video-icon">
-										<uni-icons type="videocam" size="25" color="#fff"></uni-icons>
-									</view>
-									<image class="image-cover" :src="item.video_cover" mode="widthFix"></image>
-								</block>
-								<block v-for="(item2,index2) in item.imgUrl" :key="index2" v-else>
-									<image class="image-cover" :src="item2.bigurl" mode="widthFix"
-										v-show="index2 === 0"></image>
-								</block>
-								<rich-text class="content">{{item.content}}</rich-text>
-								<view class="production-item-info">
-									<view class="production-item-info-left">
-										<view class="avatar">
-											<image :src="item.avatar"></image>
+		<my-tabs ref="myTabs" :currentIndex="selectedIndex" @tabIndexChange="tabIndexChange"
+			:tabList="tabList"></my-tabs>
+		<view class="list-scroll">
+			<!-- 滚动组件 -->
+			<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
+				:style="{height:windowHeight +'px'}">
+				<swiper-item class="production-swiper-item" v-for="(item,index) in tabList" :key="index">
+					<scroll-view scroll-y="true" :style="{height:windowHeight +'px'}" :refresher-triggered="triggered"
+						@scrolltolower="scrolltolower" :lower-threshold="100" refresher-enabled="true"
+						:refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling"
+						:scroll-anchoring="true">
+						<!-- 列表数据 -->
+						<view class="production-list">
+							<view class="production-list-column" v-for="(item0,index0) in column_count" :key="index0">
+								<view class="list-column-item"
+									v-for="(item,index) in recommendList[selectedIndex][index0]" :key="index"
+									@click="itemClick(item)">
+									<!-- 视频图片有先显示视频图片 -->
+									<block v-if="item.video_cover !== null && item.video_cover.length > 0">
+										<view class="video-icon">
+											<uni-icons type="videocam" size="25" color="#fff"></uni-icons>
 										</view>
-										<view class="info-content">
-											<view class="top">
-												<view class="nickname">{{item.nickname}}</view>
+										<image class="image-cover" :src="item.video_cover" mode="widthFix"></image>
+									</block>
+									<block v-for="(item2,index2) in item.imgUrl" :key="index2" v-else>
+										<image class="image-cover" :src="item2.bigurl" mode="widthFix"
+											v-show="index2 === 0"></image>
+									</block>
+									<rich-text class="content">{{item.content}}</rich-text>
+									<view class="production-item-info">
+										<view class="production-item-info-left">
+											<view class="avatar">
+												<image :src="item.avatar"></image>
 											</view>
-											<view class="bottom">
-												<view>{{item.identity}} | {{item.city_name}}</view>
+											<view class="info-content">
+												<view class="top">
+													<view class="nickname">{{item.nickname}}</view>
+												</view>
+												<view class="bottom">
+													<view>{{item.identity}} | {{item.city_name}}</view>
+												</view>
 											</view>
 										</view>
+										<view class="production-item-info-right">{{item.uonlinetime}}</view>
 									</view>
-									<view class="production-item-info-right">{{item.uonlinetime}}</view>
 								</view>
 							</view>
 						</view>
-					</view>
-				</scroll-view>
-			</swiper-item>
-		</swiper>
+					</scroll-view>
+				</swiper-item>
+			</swiper>
+		</view>
 	</view>
 </template>
 
@@ -112,7 +116,7 @@
 					param = {
 						has_video: 1,
 						time: this.lastTime[index] || '',
-						s_city: this.$store.state.current_city_code//'140200'
+						s_city: this.$store.state.current_city_code //'140200'
 					}
 				} else if (index >= 1) {
 					param = {
@@ -162,7 +166,7 @@
 				let index = e.target.current || e.detail.current
 				console.log('tabChange---');
 				if (this.selectedIndex === index) return
-				this.tabIndexChange(index)
+				this.$refs.myTabs.itemIndexChange(index)
 			},
 
 			//选项卡点击
@@ -221,7 +225,7 @@
 		height: 100%;
 	}
 
-	.production-container {
+	.list-scroll{
 		margin: 10px;
 	}
 
@@ -289,6 +293,7 @@
 	.production-list {
 		display: flex;
 		justify-content: space-between;
+
 		.production-list-column {
 			width: 350rpx;
 			position: relative;
@@ -304,13 +309,13 @@
 				width: 100%;
 				border-radius: 5px;
 			}
-			
-			.video-icon{
+
+			.video-icon {
 				width: 20px;
 				// background-color: aqua;
 				position: absolute;
 				margin-left: 290rpx;
-				margin-top :10px;
+				margin-top: 10px;
 				z-index: 999;
 			}
 		}

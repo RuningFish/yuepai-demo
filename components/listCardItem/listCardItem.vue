@@ -7,6 +7,7 @@
 					<view class="list-card-info-content">
 						<view class="list-card-name-content">
 							<view class="list-card-name">{{item.nickname}}</view>
+							<image class="list-card-sex" :src="item.sex === 1 ? '/static/icons/male.png':'/static/icons/female.png'">{{item.nickname}}</image>
 						</view>
 						<view class="list-card-zhiye-content">
 							<view class="list-card-zhiye" style="font-size:12px;margin-left: 0px;">{{item.identity}}</view>
@@ -97,10 +98,21 @@
 
 		.list-card-info-content {
 			margin-left: 10px;
-
-			.list-card-name {
-				font-size: 14px;
+			
+			.list-card-name-content{
+				display: flex;
+				align-items: center;
+				.list-card-name {
+					font-size: 14px;
+				}
+				
+				.list-card-sex{
+					width: 15px;
+					height: 15px;
+					margin-left: 3px;
+				}
 			}
+
 
 			.list-card-zhiye-content {
 				display: flex;

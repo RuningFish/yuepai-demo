@@ -47,10 +47,20 @@
 			{
 				"navigationBarTitleText" : ""
 			}
+		},
+		{
+			"path" : "subpkg/userHomePage/userHomePage",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"navigationBarBackgroundColor": "#dc6067",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
+		// "navigationStyle": ,
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
