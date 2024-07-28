@@ -13,7 +13,10 @@
 		},
 		
 		onLoad(options) {
-			this.url = options.url//decodeURIComponent(options.url)
+			this.url = options.url
+			// uni.setNavigationBarTitle({
+			// 	title:options.title
+			// })
 		}
 	}
 </script>

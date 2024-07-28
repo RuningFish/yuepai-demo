@@ -140,7 +140,7 @@
 			//banner 跳转
 			bannerClick(item){
 				uni.navigateTo({
-					url:'/subpkg/webview/webview?url='+'https://m.mdyuepai.com/m/about/zhubozhaomu.html' //item.url
+					url:'/subpkg/webview/webview?url='+'https://m.mdyuepai.com/m/about/zhubozhaomu.html'+'&title='+item.title
 				})
 			},
 			
@@ -276,7 +276,7 @@
 		}
 		.title{
 			margin-top: 5px;
-			font-size: 13px;
+			font-size: 24rpx;
 		}
 	}
 }

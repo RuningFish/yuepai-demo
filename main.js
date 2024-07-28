@@ -37,8 +37,6 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 Vue.prototype.$store = 'store'
-// app.use(store);
-// app.config.globalProperties.$store = store;
 const app = new Vue({
 	store,
     ...App,

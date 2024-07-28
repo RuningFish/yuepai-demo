@@ -6,13 +6,15 @@
 				<view class="info-content">
 					<view class="name-content">
 						<view class="name">{{item.nickname}}</view>
-						<image class="sex" :src="item.sex === 1 ? '/static/icons/male.png':'/static/icons/female.png'">{{item.nickname}}</image>
+						<view class="sex">
+							<image :src="item.sex === 1 ? '/static/icons/sex_boy.png':'/static/icons/sex_girl.png'" mode="scaleToFill"></image>
+						</view>
 						<view class="uonlinetime">{{item.uonlinetime}}</view>
 					</view>
 					<view class="zhiye-content">
 						<view class="zhiye" style="font-size:12px;margin-left: 0px;">{{item.identity}} | {{item.city_name}}</view>
 						<view class="shiming" v-if="item.realname">已实名</view>
-						<view class="danbao" v-if="item.ispledge">已担保</view>
+						<view class="danbao" v-if="item.ispledge">已担保</view> 
 					</view>
 				</view>
 			</view>
@@ -21,10 +23,10 @@
 				<view class="tousu">投诉</view>
 			</view>
 		</view>
-		<view class="middle" v-if="groups.length>0">
+		<view class="middle" v-if="groups[0].title">
 			<view class="item" v-for="(item,index) in groups" :key="index">
-				<uni-icons type="location" size="25" color="rgba(93,159,64,1)"></uni-icons>
-				<view>{{item}}</view>
+				<image class="icon" :src="item.icon"></image>
+				<view>{{item.title}}</view>
 			</view>
 		</view>
 		<!-- 约拍要求 -->
@@ -112,7 +114,7 @@
 			</view>
 			<!-- 推荐列表 -->
 			<view class="recommend-item" v-for="(item5,index5) in item.recommend_list" :key="index5">
-				<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5)"></listCardItem>
+				<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)"></listCardItem>
 			</view>
 		</view>
 	</view>
@@ -127,7 +129,20 @@
 				},
 				//详情
 				item: {},
-				groups: [],
+				groups: [
+					{
+						icon:'/static/icons/location2.png',
+						title:''
+					},
+					{
+						icon:'/static/icons/cameraman.png',
+						title:''
+					},
+					{
+						icon:'/static/icons/money.png',
+						title:''
+					}
+				],
 				//收到的约拍
 				regAvatarList:[],
 				page_type:0,//0从首页列表页面及详情页面进入 1.从作品页面进入
@@ -164,9 +179,9 @@
 				} = await uni.$http.post('/appapi/yuepai/apiGetDetail', this.param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.item = res.result.data
-				this.groups.push('面向' + this.item.city_name)
-				this.groups.push(this.item.type_text)
-				this.groups.push(this.item.mode_text)
+				this.groups[0].title = '面向' + this.item.city_name
+				this.groups[1].title = this.item.type_text
+				this.groups[2].title = this.item.mode_text
 				this.checkVideo()
 				console.log('详情页数据---', res, this.groups)
 			},
@@ -234,6 +249,7 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
+		border-radius: 5px;
 
 		.info-left {
 			padding: 20px 10px;
@@ -257,9 +273,16 @@
 					}
 					
 					.sex{
-						width: 15px;
-						height: 15px;
+						width: 33rpx;
+						height: 33rpx;
 						margin-left: 3px;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						image{
+							width: 70%;
+							height: 70%;
+						}
 					}
 
 					.uonlinetime {
@@ -333,14 +356,20 @@
 		padding: 15px 0;
 		display: flex;
 		justify-content: space-around;
+		border-radius: 5px;
 
-		// align-items: center;
+		.icon{
+			width: 66rpx;
+			height: 66rpx;
+			margin-bottom: 5px;
+		}
+		
 		.item {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			font-size: 14px;
+			font-size: 22rpx;
 		}
 	}
 
@@ -349,6 +378,7 @@
 		margin: 10px 10px;
 		margin-bottom: 0px;
 		padding: 10px 10px;
+		border-radius: 5px 5px 0 0;
 
 		.title {
 			height: 20px;
@@ -427,6 +457,7 @@
 		display: flex;
 		justify-content: space-between;
 		background-color: white;
+		border-radius: 0 0 5px 5px;
 
 		.item-bottom-left {
 			display: flex;
@@ -457,6 +488,7 @@
 	.zuopin {
 		background-color: white;
 		margin: 10px 10px;
+		border-radius:5px;
 
 		.title {
 			padding: 10px 10px;
@@ -496,6 +528,7 @@
 		margin: 10px 10px;
 		background-color: white;
 		padding: 10px 10px;
+		border-radius: 5px;
 		.title{
 			height: 20px;
 			border-left: 3px solid #c00000;

@@ -10,7 +10,9 @@ const store = new Vuex.Store({ //Store一定要是大写 否则会报错 common_
 		//当前定位城市
 		current_city_name:uni.getStorageSync('current_city_name') || '阳泉',
 		//当前城市code
-		current_city_code:uni.getStorageSync('current_city_code') || '140300'
+		current_city_code:uni.getStorageSync('current_city_code') || '140300',
+		
+		login:false,//当前的登陆状态
 	},
 
 	mutations:{ 

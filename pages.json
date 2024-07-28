@@ -4,15 +4,16 @@
 			"path": "pages/home/home",
 			"style": {
 				// "navigationStyle": "custom"
-				// "disableScroll": true,
-				"onReachBottomDistance": 150, 
-				"enablePullDownRefresh": true
+				"onReachBottomDistance": 150,
+				"disableScroll": true
+				// "enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/production/production",
 			"style": {
-				"navigationBarTitleText": "作品"
+				"navigationBarTitleText": "作品",
+				"disableScroll": true
 			}
 		},
 		{
@@ -26,6 +27,7 @@
 			"style": {
 				"navigationBarTitleText": "消息中心",
 				"enablePullDownRefresh": false
+				// "disableScroll": true
 			}
 		},
 		{
@@ -56,6 +58,35 @@
 				"navigationBarBackgroundColor": "#dc6067",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path" : "subpkg/login/wxLogin",
+			"style" :  
+			{
+				"navigationBarTitleText" : "",
+				"disableScroll": true
+			}
+		},
+		{
+			"path" : "subpkg/agreement/agreement",
+			"style" : 
+			{ 
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "subpkg/login/phoneNumberLogin",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "subpkg/about/about",
+			"style" : 
+			{
+				"navigationBarTitleText" : "关于麻豆约拍"
+			}
 		}
 	],
 	"globalStyle": {
@@ -73,14 +104,14 @@
 		"list": [
 			{
 				"pagePath": "pages/home/home",
-				"text": "首页"
-				// "iconPath": "static/tabbar-icons/home.png",
-				// "selectedIconPath": "static/tabbar-icons/home-active.png"
+				"text": "首页",
+				"iconPath": "/static/icons/home_main.png",
+				"selectedIconPath": "static/icons/home_main_active.png"
 			},
 			{
 				"pagePath": "pages/production/production",
 				"text": "作品"
-				// "iconPath": "static/tabbar-icons/home.png",
+				// "iconPath": "/static/icons/home_zuopin.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{
@@ -91,14 +122,14 @@
 			},
 			{
 				"pagePath": "pages/message/message",
-				"text": "消息"
-				// "iconPath": "static/tabbar-icons/home.png",
+				"text": "消息",
+				"iconPath": "/static/icons/home_message.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{
 				"pagePath": "pages/mine/mine",
-				"text": "我的"
-				// "iconPath": "static/tabbar-icons/home.png",
+				"text": "我的",
+				"iconPath": "/static/icons/home_mine.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			}
 		]
