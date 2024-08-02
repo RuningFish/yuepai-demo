@@ -1,0 +1,66 @@
+@import './variable.scss';
+//头像+list-info-right-container
+.list-info-container{
+	padding: 10px 10px;
+	display: flex;
+	align-items: center;
+	// background-color:red;
+}
+//列表头像
+.list-avatar{
+	width: 80rpx;
+	height: 80rpx;
+	border-radius: 40rpx;
+}
+.list-info-right-container{
+	margin-left: 10px;
+} 
+//昵称&性别
+.list-name-sex-container{
+	display: flex;
+	align-items: center;
+}
+//昵称
+.list-name{
+	font-size:30rpx;
+	color:#333333;
+}
+//性别
+.list-sex{
+	width: 22rpx;
+	height: 22rpx;
+	margin-left:10rpx;
+}
+//在线
+.list-uonlinetime{
+	margin-left: 10rpx;
+	font-size: 20rpx;
+	color: #b4b0b1;
+}
+//职业&城市
+.identity-city-container{
+	display: flex;
+	margin-top: 0px;
+	align-items: center;
+}
+//职业&地区
+.list-identity-city{
+	font-size: 22rpx;
+	color: #b4b0b1;
+	margin-right: 3px;
+}
+//实名
+.list-shiming,
+.list-danbao{
+	height: 26rpx;
+	width: 80rpx;
+	padding: 3px 3px;
+	margin-left: 2px;
+}
+//关注按钮
+.follow-icon{
+	width: 100rpx;
+	height: 50rpx;
+}
+
+

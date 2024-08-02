@@ -2,7 +2,7 @@
 	<view class="about-container">
 		<view class="logo">
 			<image src="/static/icons/icon_login_logo.png" mode="widthFix"></image>
-			<view class="version">版本 3.11.1</view>
+			<view class="version">版本 {{version}}</view>
 		</view>
 		<!-- list -->
 		<view class="item-list">
@@ -20,6 +20,7 @@
 	export default {
 		data() {
 			return {
+				version:uni.$appConfig.version,
 				dataList: [
 					[	{
 							url: '',
@@ -67,7 +68,7 @@
 							title: '充值服务'
 						}
 					]
-				]
+				],
 			};
 		},
 		

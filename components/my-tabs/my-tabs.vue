@@ -1,6 +1,6 @@
 <template>
 	<scroll-view class="tab-scroll" scroll-x="true">
-		<view :style="{'line-height':tabHeight + 'px'}" class="tab-item"  v-for="(item,index) in tabList" :key="index" @click="itemIndexChange(index)">
+		<view :style="{'line-height':tabHeight + 'rpx'}" class="tab-item"  v-for="(item,index) in tabList" :key="index" @click="itemIndexChange(index)">
 			<view :class="selectedIndex === index ? 'active-title' : 'normal-title'"> {{item}}</view>
 				<!-- <view class="bottom-line" v-if="index === selectedIndex"></view> -->
 		</view>
@@ -31,7 +31,7 @@
 			
 			tabHeight:{
 				type:Number,
-				default:40
+				default:80
 			}
 		},
 
@@ -85,7 +85,7 @@
 	.active-title {
 		font-size: 30rpx;
 		color: #333333;
-		border-bottom: 2px solid #dc6067;
+		border-bottom: 2px solid $main-theme-color;
 	}
 
 	.tab {

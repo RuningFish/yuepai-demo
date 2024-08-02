@@ -24,8 +24,7 @@
 		},
 		
 		onLoad() {
-			let info = uni.getSystemInfoSync()
-			console.log('信息====',info)
+
 		},
 		
 		methods:{

@@ -38,6 +38,7 @@
 </template>
 
 <script>
+	import {mapState,mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -50,11 +51,11 @@
 		},
 
 		onLoad() {
-			let info = uni.getSystemInfoSync()
-			console.log('信息====', info)
+			
 		},
 
 		methods: {
+			...mapMutations(['saveLoginId']),
 			loginButtonClick() {
 				if(!this.loginButtonEnable){return}
 				if (!this.agreement) {
@@ -113,40 +114,54 @@
 			},
 			
 			phoneNumberChange(res){
-				console.log('phoneNumberChange----',res.target.value)
 				this.phone = res.target.value
 				this.checkLoginButtonEnable()
 			},
 			
 			passwordChange(res){
-				console.log('passwordChange',res.target.value)
 				this.password = res.target.value
 				this.checkLoginButtonEnable()
 			},
 			
 			checkLoginButtonEnable(){
 				this.loginButtonEnable = (this.phone !== '' && this.password !== '')?true:false
-				console.log('phone-',this.phone, 'password-',this.password, 'loginButtonEnable-',this.loginButtonEnable)
 			},
 			
 			async loginPhone() {
+				let test = {
+					s_id:'22221113333366666666677777777777779ee8162f767cf',
+					user_id:'12345'
+				}
+				
+				this.saveLoginId(test)
+				uni.$emit('phoneLoginSuccess')
+				console.log('登录后的s_id---',this.$store.state.s_id)
+				uni.navigateBack({
+					//回退2个页面，回到点击登录的页面
+					delta:2
+				})
+				
+				return
 				let param = {
-					appid:'1601574',
-					appkey:'fYzWMTG8IMyW',
+					appid:uni.$appConfig.appid,
+					appkey:uni.$appConfig.appkey,
 					phone:this.phone,
 					pwd:this.password,
-					platform:'mdyp_app_ios',
-					version:'3.11.1',
-					system:'16.4',
-					brand:'Apple',
-					// deviceid:'85EABC68-61B1-41F5-8E21-721952C74ECC',
-					model:'iPhone15,2'
+					platform:uni.$appConfig.platform,
+					version:uni.$appConfig.version,
+					system:uni.$appConfig.system,
+					brand:uni.$appConfig.brand, 
+					model:uni.$appConfig.model
 				}
-				const {
-					data: res
-				} = await uni.$http.post('/appapi/user/loginphone',param)
+				const {data:res} = await uni.$http.post(uni.$api.loginphone,param)
 				if (res.code !== '200') return uni.$showMsg()
-				console.log('账号登录页数据---', res)
+				this.saveLoginId(res.result.data)
+				uni.$emit('phoneLoginSuccess')
+				console.log('登录后的s_id---',this.$store.state.s_id)
+				uni.navigateBack({
+					//回退2个页面，回到点击登录的页面
+					delta:2
+				})
 			}
 		}
 	}

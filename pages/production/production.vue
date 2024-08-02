@@ -8,13 +8,13 @@
 			<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
 				:style="{height:windowHeight +'px'}">
 				<swiper-item class="production-swiper-item" v-for="(item,index) in tabList" :key="index">
-					<scroll-view scroll-y="true" :style="{height:windowHeight +'px'}" :refresher-triggered="triggered"
+					<scroll-view class="swiper-item-scroll" scroll-y="true" :style="{height:windowHeight +'px'}" :refresher-triggered="triggered"
 						@scrolltolower="scrolltolower" :lower-threshold="100" refresher-enabled="true"
 						:refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling"
 						:scroll-anchoring="true">
 						<!-- 列表数据 -->
 						<view class="production-list">
-							<view class="production-list-column" v-for="(item0,index0) in column_count" :key="index0">
+							<view class="production-list-column"  v-for="(item0,index0) in column_count" :key="index0">
 								<view class="list-column-item"
 									v-for="(item,index) in recommendList[selectedIndex][index0]" :key="index"
 									@click="itemClick(item)">
@@ -54,10 +54,15 @@
 			</swiper>
 		</view>
 	</view>
+	<myTabbar currentPath="/pages/production/production"></myTabbar>
 </template>
 
 <script>
+	import myTabbar from '@/components/myTabbar/myTabbar';
 	export default {
+		comments:{
+			myTabbar
+		},
 		data() {
 			return {
 				tabList: ['推荐', '同城', '模特', '摄影师', '化妆师', '修图师', '造型师'],
@@ -75,14 +80,21 @@
 				pull: false,
 				//列数
 				column_count: 2,
-
 			};
 		},
 
 		onLoad() {
 			const info = uni.getSystemInfoSync()
-			this.windowHeight = info.windowHeight - 40
-
+			// let that = this
+			// let query = uni.createSelectorQuery().in(this);
+			// let top = 0;
+			// query.select('.swiper-item-scroll').boundingClientRect(data => {
+			// 	top = data.top
+			// 	console.log('元素距离顶部的距离:' + top)
+			// 	console.log('production - onLoad : ',top ,'\n' , info.screenTop,that.windowHeight,info.windowHeight,info) 
+			// }).exec();
+			this.windowHeight = info.windowHeight-35
+			
 			//获取列表数据
 			this.apiGetList(this.selectedIndex)
 		},
@@ -221,12 +233,15 @@
 </script>
 
 <style lang="scss">
+	     
 	page {
 		height: 100%;
 	}
 
 	.list-scroll{
-		margin: 10px;
+		// margin:0px 10px;
+		margin-left: $margin-left-right;
+		margin-right: $margin-left-right;
 	}
 
 	.content {
@@ -240,8 +255,8 @@
 		line-clamp: 3;
 		-webkit-box-orient: vertical;
 		min-height: 40rpx;
-		max-height: 105rpx;
-		// background-color: aqua;
+		max-height: 105rpx; 
+		background-color: #fff; 
 		white-space: pre-wrap;
 	}
 
@@ -249,7 +264,7 @@
 		margin-top: 20rpx;
 		margin-left: 10rpx;
 		margin-bottom: 10rpx;
-		padding-bottom: 8px;
+		padding-bottom: 16rpx;
 		display: flex;
 		justify-content: space-between;
 
@@ -293,16 +308,20 @@
 	.production-list {
 		display: flex;
 		justify-content: space-between;
+		padding-top: 8px;
+		padding-bottom: 10px;
+		columns: 2;
+		column-gap: $list-row-col-spacing;
 
 		.production-list-column {
-			width: 350rpx;
+			// width: 350rpx;
+			flex: 1;
 			position: relative;
-			// background-color: yellow;
 
 			.list-column-item {
 				background-color: white;
-				border-radius: 5px;
-				// margin-bottom: 0;
+				border-radius: $border-radius;
+				margin-bottom: $list-row-col-spacing;
 			}
 
 			.image-cover {

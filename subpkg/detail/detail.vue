@@ -1,25 +1,26 @@
 <template>
 	<view class="detail-container" v-if="item.avatar">
 		<view class="info">
-			<view class="info-left">
-				<image :src="item.avatar" class="info-img"></image>
-				<view class="info-content">
-					<view class="name-content">
-						<view class="name">{{item.nickname}}</view>
-						<view class="sex">
-							<image :src="item.sex === 1 ? '/static/icons/sex_boy.png':'/static/icons/sex_girl.png'" mode="scaleToFill"></image>
-						</view>
-						<view class="uonlinetime">{{item.uonlinetime}}</view>
+			<view class="list-info-container">
+				<image class="list-avatar" :src="item.avatar"></image>
+				<view  class="list-info-right-container">
+					<view class="list-name-sex-container">
+						<view  class="list-name">{{item.nickname}}</view>
+						<image class="list-sex" :src="item.sex === 1 ? '/static/icons/sex_boy.png': '/static/icons/sex_girl.png'" mode=""></image>
+						<view  class="list-uonlinetime">{{item.uonlinetime}}</view>
 					</view>
-					<view class="zhiye-content">
-						<view class="zhiye" style="font-size:12px;margin-left: 0px;">{{item.identity}} | {{item.city_name}}</view>
-						<view class="shiming" v-if="item.realname">已实名</view>
-						<view class="danbao" v-if="item.ispledge">已担保</view> 
+					<view class="identity-city-container">
+						<view  class="list-identity-city">{{item.identity}} | {{item.city_name}}</view>
+						<image class="list-shiming" src="/static/icons/mine_shiming_yes.png" v-if="item.realname"></image>
+						<image class="list-danbao"  src="/static/icons/mine_danbao_yes.png"  v-if="item.ispledge"></image>
 					</view>
 				</view>
 			</view>
 			<view class="info-right">
-				<view class="guanzhu">+ 关注</view>
+				<!--  已关注/ 关注 -->
+				<image @click="followUserClick" class="follow-icon"
+					:src="item.isfollow ? '/static/icons/icon_detail_guanzhu_yes.png' :'/static/icons/icon_detail_guanzhu_no.png'"
+					mode="widthFix"></image>
 				<view class="tousu">投诉</view>
 			</view>
 		</view>
@@ -61,7 +62,8 @@
 		</view>
 		<!-- 显示视频-->
 		<view class="video-container" v-if="video">
-			<video class="video-player" style="margin-left:10px;width: 350rpx;height: 510rpx;"  :src="item.video"></video>
+			<video class="video-player" style="margin-left:10px;width: 350rpx;height: 510rpx;"
+				:src="item.video"></video>
 		</view>
 		<!-- 图片 -->
 		<view class="yupai-image" v-else>
@@ -85,12 +87,14 @@
 			</view>
 		</view>
 		<!-- 收到的约拍 -->
-		<view class="regAvatarList" v-show="regAvatarList !== undefined && regAvatarList !== null && regAvatarList.length>0">
+		<view class="regAvatarList"
+			v-show="regAvatarList !== undefined && regAvatarList !== null && regAvatarList.length>0">
 			<view class="title">
 				<view>收到的约拍：{{regAvatarList.length}}</view>
 			</view>
 			<view class="images">
-				<image mode="widthFix" :src="item5.avatar" v-for="(item5,index5) in regAvatarList" :key="index5"></image>
+				<image mode="widthFix" :src="item5.avatar" v-for="(item5,index5) in regAvatarList" :key="index5">
+				</image>
 			</view>
 		</view>
 		<!-- 作品 -->
@@ -102,72 +106,99 @@
 				<view class="title-right" @click="gotoHomePage">{{item.sex === 1?'他':'她'}}的主页 ></view>
 			</view>
 			<view class="images">
-				<scroll-view class="image-scroll"  scroll-x="true">
-					<image mode="aspectFill" :src="item4.origurl" v-for="(item4,index4) in item.zuopin" :key="index4" @click="previewImage(index4,item.zuopin)"></image>
+				<scroll-view class="image-scroll" scroll-x="true">
+					<image mode="aspectFill" :src="item4.origurl" v-for="(item4,index4) in item.zuopin" :key="index4"
+						@click="previewImage(index4,item.zuopin)"></image>
 				</scroll-view>
 			</view>
 		</view>
 		<!-- 推荐约拍 -->
-		<view class="recommend-list" v-if="item.recommend_list !== undefined && item.recommend_list !== null && item.recommend_list.length >0">
+		<view class="recommend-list"
+			v-if="item.recommend_list !== undefined && item.recommend_list !== null && item.recommend_list.length >0">
 			<view id="title">
 				- 推荐约拍 -
 			</view>
 			<!-- 推荐列表 -->
 			<view class="recommend-item" v-for="(item5,index5) in item.recommend_list" :key="index5">
-				<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)"></listCardItem>
+				<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)">
+				</listCardItem>
 			</view>
+		</view>
+	</view>
+	<!-- 点赞/收藏 -->
+	<view class="bottom-container">
+		<view class="bottom-left">
+			<view class="icon_item" @click="likeIconClick">
+				<image class="like"
+					:src="item.islike ? '/static/icons/icon_bottom_like_yes.png' : '/static/icons/icon_bottom_like.png'" />
+				<view class="like-count">{{item.like_count === 0 ? '':item.like_count}}</view>
+			</view>
+			<view class="icon_item" @click="collectIconClick">
+				<image class="collect"
+					:src="item.iscollect ? '/static/icons/icon_bottom_collect_yes.png' : '/static/icons/icon_bottom_collect.png'" />
+			</view>
+		</view>
+		<view class="bottom-right">
+			<view class="bottom-right-yuepai">立即约拍</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {
+		$appConfig
+	} from '../../config/appConfig';
+	import {
+		$api
+	} from '../../request/api';
+	import {
+		$mixin
+	} from '../../static/mixin/mixin';
 	export default {
+		mixins: [$mixin],
 		data() {
 			return {
-				param: {
-					item_id: ''
-				},
+				param: $api.apiCommonRequestParam,
 				//详情
 				item: {},
-				groups: [
-					{
-						icon:'/static/icons/location2.png',
-						title:''
+				groups: [{
+						icon: '/static/icons/location2.png',
+						title: ''
 					},
 					{
-						icon:'/static/icons/cameraman.png',
-						title:''
+						icon: '/static/icons/cameraman.png',
+						title: ''
 					},
 					{
-						icon:'/static/icons/money.png',
-						title:''
+						icon: '/static/icons/money.png',
+						title: ''
 					}
 				],
 				//收到的约拍
-				regAvatarList:[],
-				page_type:0,//0从首页列表页面及详情页面进入 1.从作品页面进入
-				video:false//是否是视频
+				regAvatarList: [],
+				page_type: 0, //0从首页列表页面及详情页面进入 1.从作品页面进入
+				video: false //是否是视频
 			};
 		},
 
 		onLoad(options) {
 			console.log('text---', options);
-			this.param.item_id = options.item_id
+			if (options.item_id === '' || options.item_id === null) return
+			this.$set(this.param, 'item_id', options.item_id)
 			let title = '约拍详情'
 			//判断是否是作品页面进入
-			if (options.type !== null && options.type === 'production'){
+			if (options.type !== null && options.type === 'production') {
 				this.page_type = 1
 				title = '作品详情'
 				this.getApiGetItem()
-			}
-			else{
+			} else {
 				//请求详情
 				this.getDetail()
 				//收到的约拍
 				this.getRegAvatarList()
-			} 
+			}
 			uni.setNavigationBarTitle({
-				title:title
+				title: title
 			})
 		},
 
@@ -176,16 +207,15 @@
 				console.log('详情页param---', this.param);
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/yuepai/apiGetDetail', this.param)
+				} = await uni.$http.post($api.apiGetDetail, this.param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.item = res.result.data
 				this.groups[0].title = '面向' + this.item.city_name
 				this.groups[1].title = this.item.type_text
 				this.groups[2].title = this.item.mode_text
 				this.checkVideo()
-				console.log('详情页数据---', res, this.groups)
 			},
-			
+
 			async getRegAvatarList() {
 				const {
 					data: res
@@ -206,34 +236,152 @@
 				this.checkVideo()
 				console.log('详情页数据---zuopin', res, this.groups)
 			},
-			
-			checkVideo(){
-				if(this.item.imgUrl !== undefined && this.item.imgUrl !== null && this.item.imgUrl.length === 0 && this.item.video.length > 0){
+
+			checkVideo() {
+				if (this.item.imgUrl !== undefined && this.item.imgUrl !== null && this.item.imgUrl.length === 0 && this
+					.item.video.length > 0) {
 					this.video = true
 				}
 			},
-				
+
 			//跳转到详情页面
-			itemClick(item){
+			itemClick(item) {
 				uni.navigateTo({
-					url:'/subpkg/detail/detail?item_id='+item.item_id
+					url: '/subpkg/detail/detail?item_id=' + item.item_id
 				})
 			},
 			//查看图片
-			previewImage(index,images){
-				console.log('详情页查看图片---',images,index)
+			previewImage(index, images) {
+				console.log('详情页查看图片---', images, index)
 				uni.previewImage({
-					current:index,
-					urls:images.map(img => img.bigurl)
+					current: index,
+					urls: images.map(img => img.bigurl)
 				})
 			},
 			//跳转个人主页
-			gotoHomePage(){
+			gotoHomePage() {
 				console.log("----------------gotoHomePage")
 				uni.navigateTo({
-					url:'/subpkg/userHomePage/userHomePage?user_id='+this.item.user_id
+					url: '/subpkg/userHomePage/userHomePage?user_id=' + this.item.user_id
 				})
-			}
+			},
+
+			//关注用户
+			followUserClick() {
+				if (this.item.isfollow) {
+					this.unFollowUser(this.item.user_id, () => {
+						this.item.isfollow = false
+					})
+					
+				} else {
+					this.followUser(this.item.user_id, () => {
+						this.item.isfollow = true
+					})
+				}
+				// if (this.$store.state.s_id === '') {
+				// 	//跳转登录页面
+				// 	uni.navigateTo({
+				// 		url: '/subpkg/login/wxLogin'
+				// 	})
+				// } else if (this.item.isfollow) {
+				// 	uni.showModal({
+				// 		cancelText: '取消',
+				// 		confirmText: '确定',
+				// 		title: '温馨提示',
+				// 		content: '确定要取消关注对方吗？',
+				// 		success: function(res){
+				// 			if (res.confirm) {
+				// 				this.unFollowUser(() => {
+				// 					this.item.isfollow = false
+				// 					uni.showToast({
+				// 						title: '取消成功',
+				// 						icon: 'success'
+				// 					})
+				// 				})
+				// 			} else if (res.cancel) {
+				// 				console.log('cancel')
+				// 			}
+				// 		}.bind(this)
+				// 	})
+				// } else if (!this.item.isfollow) {
+				// 	this.followUser(() => {
+				// 		this.item.isfollow = true
+				// 		uni.showToast({
+				// 			title: '关注成功',
+				// 			icon: 'success'
+				// 		})
+				// 	})
+				// }
+			},
+			
+			async likeIconClick(){
+				if (this.$store.state.s_id === '') {
+					//跳转登录页面
+					uni.navigateTo({
+						url: '/subpkg/login/wxLogin'
+					})
+					return
+				}
+				
+				let param = $api.apiCommonRequestParam
+				this.$set(param,'s_id',this.$store.state.s_id)
+				this.$set(param, 'item_id',this.item.item_id)
+				this.$set(param, 'type','1')
+				
+				if(this.item.islike){
+					//已点赞 =>取消点赞
+					const { data: res } = await uni.$http.post($api.apiUnLike, param)
+					if (res.code !== '200') return uni.$showMsg()
+					if(res.result.status === 1){
+						this.item.islike = false
+						this.item.like_count -= 1
+					}
+				}
+				else{
+					const { data: res } = await uni.$http.post($api.apiLike, param)
+					if (res.code !== '200') return uni.$showMsg()
+					if(res.result.status === 1){
+						this.item.islike = true
+						this.item.like_count += 1
+						uni.showToast({
+							title:'点赞成功',
+							icon:'none'
+						})
+					}
+				}
+			},
+
+			//收藏
+			async collectIconClick() {
+				if (this.$store.state.s_id === '') {
+					//跳转登录页面
+					uni.navigateTo({
+						url: '/subpkg/login/wxLogin'
+					})
+					return
+				}
+				
+				let param = $api.apiCommonRequestParam
+				this.$set(param,'s_id',this.$store.state.s_id)
+				this.$set(param, 'item_id',this.item.item_id)
+				this.$set(param, 'type','1')
+				
+				if(this.item.iscollect){
+					//已收藏 =>取消收藏
+					const { data: res } = await uni.$http.post($api.apiUnCollect, param)
+					if (res.code !== '200') return uni.$showMsg()
+					if(res.result.status === 1){
+						this.item.iscollect = false
+					}
+				}
+				else{
+					const { data: res } = await uni.$http.post($api.apiCollect, param)
+					if (res.code !== '200') return uni.$showMsg()
+					if(res.result.status === 1){
+						this.item.iscollect = true
+					}
+				}
+			},
 		}
 	}
 </script>
@@ -251,77 +399,15 @@
 		background-color: white;
 		border-radius: 5px;
 
-		.info-left {
-			padding: 20px 10px;
-			display: flex;
-
-			image {
-				width: 80rpx;
-				height: 80rpx;
-				border-radius: 40rpx;
+		.list-info-container{
+			padding: 15px 15px 15px;
+			.list-avatar{
+				width: 100rpx;
+				height: 100rpx;
+				border-radius: 50rpx;
 			}
-
-			.info-content {
-				margin-left: 10px;
-
-				.name-content {
-					display: flex;
-					align-items: center;
-					.name {
-						// margin-top: 8px;
-						font-size: 14px;
-					}
-					
-					.sex{
-						width: 33rpx;
-						height: 33rpx;
-						margin-left: 3px;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						image{
-							width: 70%;
-							height: 70%;
-						}
-					}
-
-					.uonlinetime {
-						margin-left: 10px;
-						font-size: 12px;
-						line-height: 18px;
-						color: gray;
-					}
-				}
-
-
-				.zhiye-content {
-					display: flex;
-					margin-top: 3px;
-
-					.zhiye {
-						font-size: 12px;
-					}
-
-					.shiming {
-						padding: 2px 2px;
-						font-size: 9px;
-						margin-left: 10px;
-						background-color: rgb(100, 128, 249);
-						color: white;
-						border-radius: 2px;
-					}
-
-					.danbao {
-						// justify-content: center;
-						height: 12px;
-						padding: 2px 2px;
-						font-size: 9px;
-						margin-left: 10px;
-						background-color: rgb(101, 176, 152);
-						color: white;
-						border-radius: 2px;
-					}
-				}
+			.list-name{
+				font-size:36rpx;
 			}
 		}
 
@@ -333,19 +419,10 @@
 			align-items: center;
 			margin-right: 10px;
 
-			.guanzhu {
-				font-size: 14px;
-				color: #c00000;
-				border: 1px solid #c00000;
-				height: 20px;
-				padding: 2px 5px;
-				border-radius: 10px;
-			}
-
 			.tousu {
 				margin-top: 5px;
-				font-size: 13px;
-				color: gray;
+				font-size: 26rpx;
+				color: #b4b0b1;
 			}
 		}
 	}
@@ -358,12 +435,12 @@
 		justify-content: space-around;
 		border-radius: 5px;
 
-		.icon{
+		.icon {
 			width: 66rpx;
 			height: 66rpx;
 			margin-bottom: 5px;
 		}
-		
+
 		.item {
 			display: flex;
 			flex-direction: column;
@@ -488,7 +565,7 @@
 	.zuopin {
 		background-color: white;
 		margin: 10px 10px;
-		border-radius:5px;
+		border-radius: 5px;
 
 		.title {
 			padding: 10px 10px;
@@ -506,15 +583,17 @@
 				color: gray;
 			}
 		}
-		
+
 		.images {
 			padding: 10px 10px;
-			.image-scroll{
+
+			.image-scroll {
 				background-color: white;
 				width: 100%;
 				height: 260rpx;
 				white-space: nowrap;
 				display: inline-block;
+
 				image {
 					width: 260rpx;
 					height: 260rpx;
@@ -524,21 +603,25 @@
 			}
 		}
 	}
-	.regAvatarList{
+
+	.regAvatarList {
 		margin: 10px 10px;
 		background-color: white;
 		padding: 10px 10px;
 		border-radius: 5px;
-		.title{
+
+		.title {
 			height: 20px;
 			border-left: 3px solid #c00000;
 			padding-left: 10px;
 		}
-		.images{
+
+		.images {
 			margin-top: 10px;
 			display: flex;
 			flex-wrap: wrap;
-			image{
+
+			image {
 				width: 60rpx;
 				height: 60rpx;
 				border-radius: 30rpx;
@@ -548,17 +631,75 @@
 			}
 		}
 	}
-	.recommend-list{
-		 margin: 10px 0px;
-		 #title{
-			 line-height: 30px;
-			 color: rgb(232, 153, 154);
-			 text-align: center;
-		 }
+
+	.recommend-list {
+		margin: 10px 0px;
+
+		#title {
+			line-height: 30px;
+			color: rgb(232, 153, 154);
+			text-align: center;
+		}
 	}
-	
-	.video-container{
+
+	.video-container {
 		background-color: white;
 		margin: 0px 10px;
+	}
+
+	.bottom-container {
+		background-color: #fff;
+		position: fixed;
+		left: 0;
+		width: 100%;
+		bottom: 0;
+		height: 130rpx;
+		z-index: 999;
+		display: flex;
+		justify-content: space-between;
+
+		.bottom-left {
+			display: flex;
+			margin-left: 20px;
+			margin-top: 10px;
+			height: 70rpx;
+			flex: 1;
+
+			.icon_item {
+				width: 40px;
+				height: 100%;
+				display: flex;
+				align-items: center;
+
+				.like-count {
+					font-size: 20rpx;
+					line-height: 22rpx;
+					position: relative;
+					margin-top: -38rpx;
+				}
+			}
+
+			image {
+				width: 42rpx;
+				height: 42rpx;
+			}
+
+			// .collect{
+			// 	margin-left: 5px;
+			// }
+		}
+
+		.bottom-right-yuepai {
+			height: 70rpx;
+			width: 300rpx;
+			font-size: 30rpx;
+			border-radius: 35rpx;
+			margin-right: 20px;
+			margin-top: 10px;
+			color: #fff;
+			line-height: 70rpx;
+			text-align: center;
+			background: linear-gradient(90deg, #fe8185 0%, $main-theme-color 40%, $main-theme-color 100%);
+		}
 	}
 </style>

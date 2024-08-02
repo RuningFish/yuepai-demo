@@ -15,7 +15,7 @@
 							</swiper>
 						</view>
 						<!-- MiniAppSetInfor 小程序 -->
-						<view class="miniAppSetInfor" v-if="mini_app_show_visible">
+						<view class="miniAppSetInfor" v-if="mini_app_show_visible && mini_app_list.length > 0">
 							<view class="mini-app-item" v-for="(item,index) in mini_app_list" :key="index">
 								<image :src="item.icon_url"></image>
 								<view class="title">{{item.title}}</view>
@@ -32,6 +32,7 @@
 				</scroll-view> 
 			</swiper-item>
 		</swiper>
+		<myTabbar currentPath="/pages/home/home"></myTabbar>
 </template>
 
 <script>
@@ -39,10 +40,13 @@
 	// homepage.vue 页面
 	// import store from '@/store/store.js'
 	import {mapState,mapMutations} from 'vuex'
+	import myTabbar from '@/components/myTabbar/myTabbar';
 	export default {
+		comments:{
+			myTabbar
+		},
 		computed:{
 			...mapState(['current_city_name','current_city_code'])
-	
 		},
 		
 		data() {
@@ -78,11 +82,13 @@
 			this.getRecommendList(this.selectedIndex)
 			
 			const info = uni.getSystemInfoSync()
-			this.windowHeight = info.windowHeight-40
+			// this.windowHeight = info.screenHeight-info.statusBarHeight-info.safeAreaInsets.top-40-(info.safeAreaInsets.bottom > 0? 65:50)
+			// console.log('--------909090',info.windowHeight)
+			this.windowHeight = info.windowHeight-35
 		},
 				
 		methods:{
-			...mapMutations(['updateCurrentCityInfo','storeLog']),
+			...mapMutations(['updateCurrentCityInfo']),
 			
 			//获取banner
 			async getBanner(){
@@ -231,11 +237,6 @@
 </script>
 
 <style lang="scss">
-.home-nav-container {
-	height: 100px;
-	width: 100%;
-	// background-color: orangered;
-}
 	
 .home-banner{
 	margin: 10px 10px;

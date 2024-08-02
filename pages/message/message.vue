@@ -12,10 +12,15 @@
 			</view>
 		</view>
 	</view>
+	<myTabbar currentPath="/pages/message/message"></myTabbar>
 </template>
 
 <script>
+	import myTabbar from '@/components/myTabbar/myTabbar';
 	export default {
+		comments:{
+			myTabbar
+		},
 		data() {
 			return {
 				dataList: [

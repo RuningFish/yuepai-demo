@@ -1,80 +1,84 @@
 <template>
-	<view class="home-page-container">
-		<view class="user-info" v-if="userInfo.nickname">
-			<view class="info">
-				<view class="info-left">
-					<view class="avatar">
-						<image :src="userInfo.avatar" mode="widthFix"></image>
-					</view>
-					<view class="info-content">
-						<view class="name-content">
-							<view class="nickname">{{userInfo.nickname}}</view>
-							<view class="sex">{{userInfo.sex === 2 ? '女':'男'}}</view>
+	<scroll-view id="100" class="bg-scroll" :scroll-y="bg_scroll_enable" :scroll-top="bg_scroll_top"
+		show-scrollbar="false" :style="{height: windowHeight + 'px'}" @scroll="scroll">
+		<view class="home-page-container">
+			<view class="user-info" v-if="userInfo.nickname">
+				<view class="info">
+					<view class="info-left">
+						<view class="avatar">
+							<image :src="userInfo.avatar" mode="widthFix"></image>
 						</view>
-						<view>
-							<view class="last_active_time">{{userInfo.last_active_time}}</view>
-						</view>
-						<view class="identity-content">
-							<view class="identity">{{userInfo.identity}} | {{userInfo.city_name}}</view>
-							<view class="age">{{userInfo.age}}岁</view>
-						</view>
-					</view>
-				</view>
-				<view class="info-right">
-					<view class="isfollow">+ 关注</view>
-					<view class="tousu">投诉</view>
-				</view>
-			</view>
-			<view class="count-content">
-				<view class="yuepai">
-					<view class="title">约拍</view>
-					<view class="count">{{userInfo.yuepai_count}}</view>
-				</view>
-				<view class="follow">
-					<view class="title">关注</view>
-					<view class="count">{{userInfo.follow_count}}</view>
-				</view>
-				<view class="followed">
-					<view class="title">粉丝</view>
-					<view class="count">{{userInfo.followed_count}}</view>
-				</view>
-			</view>
-		</view>
-		<!-- 约拍动态-作品相册 -->
-		<view class="tab">
-			<view class="tab-content">
-				<view v-for="(item,index) in tabList" :key="index" @click="tabItemClick(index)">
-					<view :class="index === selectedIndex? 'active' :''">{{item}}</view>
-					<view class="bottom-line" v-if="index === selectedIndex"></view>
-				</view>
-			</view>
-		</view>
-		<!-- 列表数据 -->
-		<view class="home-page-list">
-			<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
-				:style="{height:windowHeight +'px'}">
-				<swiper-item v-for="(item,index) in tabList" :key="index">
-					<scroll-view class="list-scroll" scroll-y="true" :style="{height:windowHeight +'px'}"
-						:refresher-triggered="triggered" @scrolltolower="scrolltolower" :lower-threshold="100"
-						refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh"
-						@refresherpulling="onPulling" :scroll-anchoring="true">
-						<view v-if="dataList[index] && dataList[index].list">
-							<view v-for="(item1,index1) in dataList[index].list" :key="index1">
-								<homePageCardItem :item="item1" @itemClick="itemClick(item1)"
-									@previewImage="previewImage"></homePageCardItem>
+						<view class="info-content">
+							<view class="name-content">
+								<view class="nickname">{{userInfo.nickname}}</view>
+								<view class="sex">{{userInfo.sex === 2 ? '女':'男'}}</view>
+							</view>
+							<view>
+								<view class="last_active_time">{{userInfo.last_active_time}}</view>
+							</view>
+							<view class="identity-content">
+								<view class="identity">{{userInfo.identity}} | {{userInfo.city_name}}</view>
+								<view class="age">{{userInfo.age}}岁</view>
 							</view>
 						</view>
-						<view class="nomore-container" v-if="!dataList[index].hasNomore">
-							<view class="content">已全部加载完毕</view>
-						</view>
-					</scroll-view>
-				</swiper-item>
-			</swiper>
+					</view>
+					<view class="info-right" v-if="mine === undefined || mine === false">
+						<view class="isfollow">+ 关注</view>
+						<view class="tousu">投诉</view>
+					</view>
+				</view>
+				<view class="count-content">
+					<view class="yuepai">
+						<view class="title">约拍</view>
+						<view class="count">{{userInfo.yuepai_count}}</view>
+					</view>
+					<view class="follow">
+						<view class="title">关注</view>
+						<view class="count">{{userInfo.follow_count}}</view>
+					</view>
+					<view class="followed">
+						<view class="title">粉丝</view>
+						<view class="count">{{userInfo.followed_count}}</view>
+					</view>
+				</view>
+			</view>
+			<!-- 约拍动态-作品相册 -->
+			<view class="tab" id="yuepaiAndZuopin"
+				style="background-color: yellow;position: sticky;top: 0;z-index: 999;">
+				<view class="tab-content">
+					<view v-for="(item,index) in tabList" :key="index" @click="tabItemClick(index)">
+						<view :class="index === selectedIndex? 'active' :''">{{item}}</view>
+						<view class="bottom-line" v-if="index === selectedIndex"></view>
+					</view>
+				</view>
+			</view>
+			<!-- 列表数据 -->
+			<view class="home-page-list">
+				<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
+					:style="{height:windowHeight +'px'}">
+					<swiper-item v-for="(item,index) in tabList" :key="index">
+						<scroll-view id="200" class="list-scroll" :scroll-y="list_scroll_enable"
+							:scroll-top="list_scroll_top" :style="{height:windowHeight-50 +'px'}"
+							@scrolltolower="scrolltolower" :lower-threshold="100" :scroll-anchoring="true"
+							@scroll="scroll">
+							<view v-if="dataList[index] && dataList[index].list">
+								<view v-for="(item1,index1) in dataList[index].list" :key="index1">
+									<homePageCardItem :item="item1" @itemClick="itemClick(item1)"
+										@previewImage="previewImage"></homePageCardItem>
+								</view>
+								<!-- refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh"
+							@refresherpulling="onPulling"  -->
+							</view>
+							<view class="nomore-container" v-if="!dataList[index].hasNomore">
+								<view class="content">已全部加载完毕</view>
+							</view>
+						</scroll-view>
+					</swiper-item>
+				</swiper>
+			</view>
 		</view>
-		
+	</scroll-view>
 
-	</view>
-	
 	<view class="home-page-bottom">
 		<view class="">极速联系</view>
 		<view class="">约拍{{userInfo.sex === 2 ? '她':'他'}}</view>
@@ -85,7 +89,11 @@
 	export default {
 		data() {
 			return {
+				//用户id
 				user_id: '',
+				//是否是自己的主页
+				mine: false,
+				windowHeight: 0,
 				//个人信息
 				userInfo: {},
 				tabList: ['约拍动态', '作品相册'],
@@ -101,6 +109,12 @@
 				// //
 				triggered: true,
 				pull: false,
+				bg_scroll_enable: true,
+				bg_scroll_top: 0,
+				list_scroll_enable: false,
+				list_scroll_top: 0,
+				offset_top: 0,
+				last_scroll_top: 0
 
 			};
 		},
@@ -112,13 +126,18 @@
 		onLoad(options) {
 			console.log('onLoad-----')
 			this.user_id = options.user_id
+			this.mine = options.mine
 			console.log('user_id', this.user_id)
+
+			// const info = uni.getSystemInfoSync()
+			// this.scroll_height = info.windowHeight-40
+			// console.log('info === ',info)
 
 			this.initData()
 
 			const info = uni.getSystemInfoSync()
-			this.windowHeight = info.windowHeight
-			console.log('text---', this.windowHeight);
+			this.windowHeight = info.windowHeight - (this.mine ? 0 : 40)
+			console.log('text---', this.windowHeight, info);
 
 			//用户信息
 			this.getUserInfo()
@@ -163,6 +182,13 @@
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading(res)
 				// console.log('个人主页约拍数据---', this.dataList[this.selectedIndex])
+
+				let that = this
+				let query = uni.createSelectorQuery().in(this);
+				query.select('#yuepaiAndZuopin').boundingClientRect(data => {
+					that.offset_top = data.top
+					console.log('元素距离顶部的距离:' + that.offset_top)
+				}).exec();
 			},
 			//作品数据
 			async getUserZuopin() {
@@ -217,6 +243,101 @@
 				}
 			},
 
+			scroll(e) {
+				let id = e.currentTarget.id
+				let scrollTop = e.detail.scrollTop
+
+				let direction = '向下滚动'
+				if (this.last_scroll_top > scrollTop) {
+					direction = '向上滚动'//2
+				} else {
+					// console.log('向上滚动')
+				}
+
+				// if (direction === 1) {
+				// 	if (scrollTop >= this.offset_top) {
+				// 		// this.bg_scroll_top = this.offset_top
+				// 		// this.list_scroll_top = 0
+				// 		this.bg_scroll_enable = false
+				// 		this.list_scroll_enable = true
+				// 	} 
+				// 	else { //if(scrollTop <= 0)
+				// 		this.bg_scroll_enable = true
+				// 		this.list_scroll_enable = false
+				// 	}
+				// } else {
+
+				// }
+				
+				console.log('scroll 滚动====', id, scrollTop, direction)
+				if(direction === '向下滚动'){
+					if(id === '100'){
+						if(scrollTop >= this.offset_top){
+							this.bg_scroll_top = this.offset_top
+							this.bg_scroll_enable = false
+							this.list_scroll_enable = true
+							console.log('滚动到位置了==============')
+						}
+					}
+					else{ 
+						this.bg_scroll_enable = false
+						this.list_scroll_enable = true
+					}
+				}
+				else if(direction === '向上滚动'){
+					if(id === '200'){
+						if(scrollTop <= 5){
+							this.bg_scroll_enable = true
+							this.list_scroll_enable = false
+						}
+						else{
+							this.bg_scroll_enable = false
+							this.list_scroll_enable = true
+						}
+					}
+					else if(id === '100'){
+						// if(scrollTop >= this.offset_top){
+						// 	this.bg_scroll_enable = true
+						// 	this.list_scroll_enable = false
+						// 	// console.log('滚动到位置了==============')
+						// }
+						// else{
+						// 	this.bg_scroll_enable = true
+						// 	this.list_scroll_enable = false
+						// }
+						this.bg_scroll_enable = true
+						this.list_scroll_enable = false
+						this.list_scroll_top = 0
+					}
+				}
+
+				// if(id == '100'){
+				// 	//bg_scroll
+				// 	if(scrollTop >= this.offset_top && direction === '向上滚动'){
+				// 		this.bg_scroll_top = this.offset_top 
+				// 		this.list_scroll_top = 0
+				// 		this.bg_scroll_enable = false
+				// 		this.list_scroll_enable = true
+				// 	}
+				// 	else {//if(scrollTop <= 0)
+				// 		this.bg_scroll_enable = true
+				// 		this.list_scroll_enable = false
+				// 	}
+				// }
+				// else if(id == '200'){
+				// 	if(scrollTop <= 0){
+				// 		this.list_scroll_top = 0
+				// 		this.bg_scroll_enable = true
+				// 		this.list_scroll_enable = false
+				// 	}
+				// 	else {//if(scrollTop >= this.offset_top)
+				// 		this.bg_scroll_enable = false
+				// 		this.list_scroll_enable = true
+				// 	}
+				// }
+				this.last_scroll_top = scrollTop
+			},
+
 			stopLoading(res) {
 				if (this.pull) {
 					this.dataList[this.selectedIndex] = this.tabItemData()
@@ -260,9 +381,10 @@
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		background-color: #dc6067;
 	}
+
 	.home-page-container {
 		height: 100%;
 		// padding-bottom: 100px;
@@ -373,9 +495,10 @@
 
 	.tab-content {
 		background-color: #fff;
-		padding: 15px 30px;
+		padding: 30rpx 60rpx;
 		padding-bottom: 12rpx;
 		display: flex;
+		align-items: center;
 		justify-content: space-around;
 		font-size: 28rpx;
 		color: rgb(120, 120, 120);
@@ -396,7 +519,7 @@
 
 	.nomore-container {
 		height: 100px;
-		// background-color: yellow;
+		background-color: yellow;
 
 		.content {
 			font-size: 26rpx;
@@ -411,18 +534,23 @@
 		background-color: #efeff4;
 		// padding-bottom: 1200px;
 	}
-	
-	// .home-page-bottom{
-	// 	position:sticky;
-	// 	left: 0;
-	// 	right: 0;
-	// 	bottom: 0;
-	// 	height: 50px;
-	// 	// z-index: 999;
-	// 	display: flex;
-	// 	padding: 20px;
-	// 	padding-top: 10px;
-	// 	justify-content: space-around;
-	// 	background-color: green;
-	// }
+
+	.home-page-bottom {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		// right: 0;
+		bottom: 0;
+		height: 40px;
+		z-index: 999;
+		display: flex;
+		padding: 20px;
+		// padding-top: 10px;
+		justify-content: space-around;
+		background-color: green;
+	}
+
+	.ver-scroll {
+		// background-color: yellow;
+	}
 </style>

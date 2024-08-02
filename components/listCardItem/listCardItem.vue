@@ -2,17 +2,17 @@
 	<view>
 		<view class="list-card-item-container" @click="gotoDetail(item)">
 			<view class="list-card-item-info">
-				<view class="list-card-item-info-left">
-					<image :src="item.avatar" class="list-card-info-img"></image>
-					<view class="list-card-info-content">
-						<view class="list-card-name-content">
-							<view class="list-card-name">{{item.nickname}}</view>
-							<image class="list-card-sex" :src="item.sex === 1 ? '/static/icons/male.png':'/static/icons/female.png'">{{item.nickname}}</image>
+				<view class="list-info-container">
+					<image class="list-avatar" :src="item.avatar"></image>
+					<view class="list-info-right-container">
+						<view class="list-name-sex-container">
+							<view class="list-name">{{item.nickname}}</view>
+							<image class="list-sex" :src="item.sex === 1 ? '/static/icons/sex_boy.png': '/static/icons/sex_girl.png'" mode=""></image>
 						</view>
-						<view class="list-card-zhiye-content">
-							<view class="list-card-zhiye" style="font-size:12px;margin-left: 0px;">{{item.identity}}</view>
-							<view class="list-card-shiming" v-if="item.realname">已实名</view>
-							<view class="list-card-danbao" v-if="item.ispledge">已担保</view>
+						<view class="identity-city-container">
+							<view  class="list-identity-city">{{item.identity}}</view>
+							<image class="list-shiming" src="/static/icons/mine_shiming_yes.png" v-if="item.realname"></image>
+							<image class="list-danbao"  src="/static/icons/mine_danbao_yes.png"  v-if="item.ispledge"></image>
 						</view>
 					</view>
 				</view>
@@ -86,62 +86,8 @@
 		display: flex;
 		justify-content: space-between;
 
-		.list-card-item-info-left {
-			display: flex;
-		}
-
-		.list-card-item-info-left image {
-			width: 80rpx;
-			height: 80rpx;
-			border-radius: 40rpx;
-		}
-
-		.list-card-info-content {
-			margin-left: 10px;
-			
-			.list-card-name-content{
-				display: flex;
-				align-items: center;
-				.list-card-name {
-					font-size: 14px;
-				}
-				
-				.list-card-sex{
-					width: 15px;
-					height: 15px;
-					margin-left: 3px;
-				}
-			}
-
-
-			.list-card-zhiye-content {
-				display: flex;
-				margin-top: 3px;
-
-				.list-card-zhiye {
-					font-size: 12px;
-				}
-
-				.list-card-shiming {
-					padding: 2px 2px;
-					font-size: 9px;
-					margin-left: 10px;
-					background-color: rgb(100, 128, 249);
-					color: white;
-					border-radius: 2px;
-				}
-
-				.list-card-danbao {
-					// justify-content: center;
-					height: 12px;
-					padding: 2px 2px;
-					font-size: 9px;
-					margin-left: 10px;
-					background-color: rgb(101, 176, 152);
-					color: white;
-					border-radius: 2px;
-				}
-			}
+		.list-info-container{
+			padding: 0;
 		}
 
 		.list-card-item-info-right {
@@ -231,7 +177,7 @@
 			// background-color: yellow;
 			margin-right: 10px;
 			color: rgb(232, 153, 154);
-			border: 1px solid rgb(232, 153, 154);
+			border: 0.5px solid rgb(232, 153, 154);
 			font-size: 8px;
 			line-height: 14px;
 			padding: 0px 5px;

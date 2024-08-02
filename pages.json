@@ -85,7 +85,21 @@
 			"path" : "subpkg/about/about",
 			"style" : 
 			{
-				"navigationBarTitleText" : "关于麻豆约拍"
+				"navigationBarTitleText" : "关于MD约拍"
+			}
+		},
+		{
+			"path" : "subpkg/myFollowUser/myFollowUser",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的关注"
+			}
+		},
+		{
+			"path" : "subpkg/myCollect/myCollect",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
 			}
 		}
 	],
@@ -100,36 +114,37 @@
 		}
 	},
 	"tabBar": {
+		// "height": "0",
 		"selectedColor": "#c00000",
 		"list": [
 			{
-				"pagePath": "pages/home/home",
-				"text": "首页",
-				"iconPath": "/static/icons/home_main.png",
-				"selectedIconPath": "static/icons/home_main_active.png"
+				"pagePath": "pages/home/home"
+				// "text": "首页",
+				// "iconPath": "/static/icons/home_main.png",
+				// "selectedIconPath": "static/icons/home_main_active.png"
 			},
 			{
-				"pagePath": "pages/production/production",
-				"text": "作品"
+				"pagePath": "pages/production/production"
+				// "text": "作品",
 				// "iconPath": "/static/icons/home_zuopin.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{
-				"pagePath": "pages/publish/publish",
-				"text": "发布"
+				"pagePath": "pages/publish/publish"
+				// "text": "发布"
 				// "iconPath": "static/tabbar-icons/home.png",
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{
-				"pagePath": "pages/message/message",
-				"text": "消息",
-				"iconPath": "/static/icons/home_message.png"
+				"pagePath": "pages/message/message"
+				// "text": "消息",
+				// "iconPath": "/static/icons/home_message.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{
-				"pagePath": "pages/mine/mine",
-				"text": "我的",
-				"iconPath": "/static/icons/home_mine.png"
+				"pagePath": "pages/mine/mine"
+				// "text": "我的",
+				// "iconPath": "/static/icons/home_mine.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			}
 		]
