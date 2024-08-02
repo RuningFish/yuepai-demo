@@ -4,8 +4,6 @@ import { $http } from '@/request/http.js'
 import { $appConfig } from './config/appConfig'
 import { $api } from './request/api' 
 
-// import {mapstate,mapMuations} from 'vuex'
-// ...mapMuations(['saveLoginId'])
 //挂载到uni下 方便全局调用
 uni.$http = $http
 uni.$appConfig = $appConfig
@@ -22,12 +20,11 @@ $http.beforeRequest = function(options){
 }
 
 $http.requestSuccess = function(res){
-	// if(res.data.result.status === -999){
+	// if(res.data.result.status !== undefined && res.data.result.status === -999){
 	// 	//登录状态已丢失
 	// 	uni.setStorageSync('s_id','')
 	// 	uni.setStorageSync('user_id','')
 	// 	uni.$showMsg(res.data.result.message)
-	// 	console.log('登录状态已丢失----',uni.$store.state.s_id +'[]')
 	// }
 }
 

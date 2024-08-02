@@ -20,31 +20,19 @@
 		},
 
 		computed: {
-			// computedClass(){
-			// 	return{
-			// 		tabbarBgColor:'yellow',
-			// 		tabbarHeight:0
-			// 	}
-			// },
-			// computedStyle(){
-			// 	return {
-			// 		background-color:'yellow',
-			// 		height:'164rpx'
-			// 	}
-			// }
+			
 		},
 
 		created() {
 			uni.hideTabBar({animation:false})
-			let info = uni.getSystemInfoSync()
-			var height = info.safeAreaInsets.bottom > 0 ? 65 : 50;
-			this.tabbar_height += String(height) + 'px'
-			console.log('=====1111rrrr:', this.tabbar_height)
+			// let info = uni.getSystemInfoSync()
+			// var height = info.safeAreaInsets.bottom > 0 ? 65 : 50;
+			// this.tabbar_height += String(height) + 'px'
+			// console.log('=====1111rrrr:', this.tabbar_height)
 		},
 
 		data() {
 			return {
-				bgColor: '--bgColor:#2f74b3',
 				tabbar_height: '--tabbar_height:',
 				tabbarList: [{
 						"pagePath": "/pages/home/home",
@@ -91,7 +79,6 @@
 						url: url
 					})
 				}
-				// this.currentPath = url
 			}
 		}
 	}
@@ -103,21 +90,23 @@
 		left: 0;
 		bottom: 0;
 		width: 100%;
-		height: var(--tabbar_height);
+		// height: 60px;//var(--tabbar_height);
 		z-index: 999;
 		background-color: #fff;
 		display: flex;
-
+		height: calc(110rpx + constant(safe-area-inset-bottom)*0.4);// 兼容 IOS<11.2 
+		height: calc(110rpx + env(safe-area-inset-bottom)*0.4);// 兼容 IOS>11.2
 		.image {
 			width: 44rpx;
 			height: 44rpx;
+			margin-top: 3px;
 		}
 
 		.text {
-			font-size: 20rpx;
+			font-size: 22rpx;
 			text-align: center;
 			color: #333;
-			margin-top: 2px;
+			margin-top: 5rpx;
 		}
 		
 		.active-text {
@@ -130,10 +119,11 @@
 		}
 
 		.item {
-			margin-top: 5px;
+			height: 100%;
+			margin-top: 0rpx;
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
+			padding-top: 5px;
 			align-items: center;
 		}
 	}

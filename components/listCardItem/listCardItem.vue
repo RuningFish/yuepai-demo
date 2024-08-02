@@ -70,6 +70,7 @@
 		methods:{
 			//跳转到详情页面
 			gotoDetail(item){
+				console.log('listCardItem----gotoDetail')
 				this.$emit('itemClick',item)
 			},
 			//查看图片

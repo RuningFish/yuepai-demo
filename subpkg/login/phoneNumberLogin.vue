@@ -128,20 +128,6 @@
 			},
 			
 			async loginPhone() {
-				let test = {
-					s_id:'22221113333366666666677777777777779ee8162f767cf',
-					user_id:'12345'
-				}
-				
-				this.saveLoginId(test)
-				uni.$emit('phoneLoginSuccess')
-				console.log('登录后的s_id---',this.$store.state.s_id)
-				uni.navigateBack({
-					//回退2个页面，回到点击登录的页面
-					delta:2
-				})
-				
-				return
 				let param = {
 					appid:uni.$appConfig.appid,
 					appkey:uni.$appConfig.appkey,

@@ -2,14 +2,14 @@
 	<!-- 选项卡 -->
 	<my-tabs ref="myTabs" :currentIndex="selectedIndex" @tabIndexChange="tabIndexChange" :tabList="tabList"></my-tabs>
 		<!-- 滚动组件 -->
-		<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange" :style="{height:windowHeight +'px'}">
+		<swiper class="hor-swiper" :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange" >
 			<swiper-item class="home-swiper-item" v-for="(item,index) in tabList" :key="index">
-				<scroll-view scroll-y="true" class="lis-scroll" :style="{height:windowHeight +'px'}" :refresher-triggered="triggered" @scrolltolower="scrolltolower" :lower-threshold="100" refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling" >
+				<scroll-view scroll-y="true" class="list-scroll" :refresher-triggered="triggered" @scrolltolower="scrolltolower" :lower-threshold="100" refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling" >
 					<view class="only-home-one" v-if="index === 0">
 						<!-- 首页banner -->
 						<view class="home-banner">
-							<swiper :indicator-dots="banner.length>1" :autoplay="true" :interval="3000" :duration="1000" circular="true">
-								<swiper-item v-for="(item,index) in banner" :key="index">
+							<swiper style="height: 100%;" :indicator-dots="banner.length>1" :autoplay="true" :interval="3000" :duration="1000" circular="true">
+								<swiper-item  v-for="(item,index) in banner" :key="index">
 									<image class="banner-img" :src="item.imgUrl" @click="bannerClick(item.url)"></image>
 								</swiper-item>
 							</swiper>
@@ -28,6 +28,9 @@
 						<view class="home-recommend-item" v-for="(item,index) in recommendList[index]" :key="index">
 							<listCardItem :item="item" @itemClick="itemClick" @previewImage="previewImage"></listCardItem>
 						</view>
+						<!-- <view class="" v-for="(item2,index2) in 100" :key="index2" style="height: 60px;line-height: 60px;border: 1px solid forestgreen;" @click="testClick(index2)">
+							{{index2}}
+						</view> -->
 					</view>
 				</scroll-view> 
 			</swiper-item>
@@ -63,8 +66,6 @@
 				mini_app_list:[],
 				// 存放数据的数组
 				recommendList:[[],[],[]],
-				//可滚动的区域
-				windowHeight:0,
 				isloading:false,
 				//加载更多使用，为上一条数据的time
 				lastTime:[],
@@ -84,11 +85,17 @@
 			const info = uni.getSystemInfoSync()
 			// this.windowHeight = info.screenHeight-info.statusBarHeight-info.safeAreaInsets.top-40-(info.safeAreaInsets.bottom > 0? 65:50)
 			// console.log('--------909090',info.windowHeight)
-			this.windowHeight = info.windowHeight-35
+			// this.windowHeight = info.windowHeight-35
 		},
 				
 		methods:{
 			...mapMutations(['updateCurrentCityInfo']),
+			
+			testClick(index){
+				uni.showToast({
+					title:String(index)
+				})
+			},
 			
 			//获取banner
 			async getBanner(){
@@ -132,6 +139,7 @@
 			
 			//跳转到详情页面
 			itemClick(item){
+				console.log('-------跳转到详情页面')
 				uni.navigateTo({
 					url:'/subpkg/detail/detail?item_id='+item.item_id
 				})
@@ -215,13 +223,13 @@
 			//上拉加载
 			 scrolltolower() {
 				console.log('loadMore-----','data');
-			    if (this.isloading) return
-			 	if(this.selectedIndex === 0){
-					this.getRecommendList(this.selectedIndex)
-				}
-				else{
-					this.apiGetList(this.selectedIndex)
-				}
+			 //    if (this.isloading) return
+			 // 	if(this.selectedIndex === 0){
+				// 	this.getRecommendList(this.selectedIndex)
+				// }
+				// else{
+				// 	this.apiGetList(this.selectedIndex)
+				// }
 			 },
 			 
 			 stopLoading(){
@@ -237,7 +245,6 @@
 </script>
 
 <style lang="scss">
-	
 .home-banner{
 	margin: 10px 10px;
 	height: 180rpx;
@@ -245,16 +252,19 @@
 		width: 100%;
 		height: 180rpx;
 	}
-
 }
 
-.lis-scroll{
+.hor-swiper{
 	width: 100%;
-	// height: 555px;
+	height: calc(100vh - 80rpx - 110rpx - constant(safe-area-inset-bottom)*0.4);// 兼容 IOS<11.2
+	height: calc(100vh - 80rpx - 110rpx - env(safe-area-inset-bottom)*0.4);// 兼容 IOS>11.2
+}
+
+.list-scroll{
+	height: 100%;
 }
 
 .home-recommend-list{
-	// background-color: bisque;
 	padding-bottom: 5px;
 }
 

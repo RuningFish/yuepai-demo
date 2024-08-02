@@ -5,16 +5,15 @@
 			:tabList="tabList"></my-tabs>
 		<view class="list-scroll">
 			<!-- 滚动组件 -->
-			<swiper :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange"
-				:style="{height:windowHeight +'px'}">
+			<swiper class="hor-swiper" :indicator-dots="false" :autoplay="false" :current="selectedIndex" @change="tabChange">
 				<swiper-item class="production-swiper-item" v-for="(item,index) in tabList" :key="index">
-					<scroll-view class="swiper-item-scroll" scroll-y="true" :style="{height:windowHeight +'px'}" :refresher-triggered="triggered"
+					<scroll-view class="hide-scrollbar" scroll-y="true" :refresher-triggered="triggered"
 						@scrolltolower="scrolltolower" :lower-threshold="100" refresher-enabled="true"
 						:refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling"
 						:scroll-anchoring="true">
 						<!-- 列表数据 -->
 						<view class="production-list">
-							<view class="production-list-column"  v-for="(item0,index0) in column_count" :key="index0">
+							<view class="production-list-column" v-for="(item0,index0) in column_count" :key="index0">
 								<view class="list-column-item"
 									v-for="(item,index) in recommendList[selectedIndex][index0]" :key="index"
 									@click="itemClick(item)">
@@ -60,7 +59,7 @@
 <script>
 	import myTabbar from '@/components/myTabbar/myTabbar';
 	export default {
-		comments:{
+		comments: {
 			myTabbar
 		},
 		data() {
@@ -71,8 +70,6 @@
 				recommendList: [
 					[]
 				],
-				//可滚动的区域
-				windowHeight: 0,
 				isloading: false,
 				//加载更多使用，为上一条数据的time
 				lastTime: [],
@@ -93,8 +90,7 @@
 			// 	console.log('元素距离顶部的距离:' + top)
 			// 	console.log('production - onLoad : ',top ,'\n' , info.screenTop,that.windowHeight,info.windowHeight,info) 
 			// }).exec();
-			this.windowHeight = info.windowHeight-35
-			
+
 			//获取列表数据
 			this.apiGetList(this.selectedIndex)
 		},
@@ -233,13 +229,19 @@
 </script>
 
 <style lang="scss">
-	     
+	.hor-swiper {
+		width: 100%;
+		height: calc(100vh - 80rpx - 110rpx - constant(safe-area-inset-bottom)*0.4); // 兼容 IOS<11.2
+		height: calc(100vh - 80rpx - 110rpx - env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
+	}
+	.hide-scrollbar{
+		height: 100%;
+	}
 	page {
 		height: 100%;
 	}
 
-	.list-scroll{
-		// margin:0px 10px;
+	.list-scroll {
 		margin-left: $margin-left-right;
 		margin-right: $margin-left-right;
 	}
@@ -255,8 +257,8 @@
 		line-clamp: 3;
 		-webkit-box-orient: vertical;
 		min-height: 40rpx;
-		max-height: 105rpx; 
-		background-color: #fff; 
+		max-height: 105rpx;
+		background-color: #fff;
 		white-space: pre-wrap;
 	}
 

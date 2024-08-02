@@ -1,6 +1,5 @@
 <template>
-	<scroll-view class="mine-scroll" scroll-y="true" :style="{'height': windowHeight + 'px'}" show-scrollbar="false">
-	<!-- <view class="" style="flex: 1;"> -->
+	<scroll-view class="hide-scrollbar" scroll-y="true" show-scrollbar="false">
 		<!-- 未登录 -->
 		<view class="not-login-info" v-if="userInfo.nickname === undefined" @click="gotoLogin">
 			<image src="/static/icons/icon_avatar.png" mode=""></image>
@@ -12,7 +11,7 @@
 				<view class="bottom">点击登录</view>
 			</view>
 		</view>
-		<!-- 已登录 --> 
+		<!-- 已登录 -->
 		<view class="login-info" v-else>
 			<view class="info">
 				<view class="info-left">
@@ -32,8 +31,12 @@
 							<view class="age">{{userInfo.age}}</view>
 						</view>
 						<view class="realname-content">
-							<view class="realname">{{userInfo.realname === 0?'未实名':'已实名'}}</view>
-							<view class="ispledge">{{userInfo.ispledge === 0?'未担保':'已担保'}}</view>
+							<image class="list-shiming"
+								:src="userInfo.realname === 0? '/static/icons/mine_shiming_no.png' : '/static/icons/mine_shiming_yes.png'">
+							</image>
+							<image class="list-danbao"
+								:src="userInfo.ispledge === 0? '/static/icons/mine_danbao_no.png' : '/static/icons/mine_danbao_yes.png'">
+							</image>
 						</view>
 					</view>
 				</view>
@@ -55,17 +58,17 @@
 					<view class="title">粉丝</view>
 				</view>
 			</view>
-			
+
 			<!-- vip -->
-			<template  v-if="false">
+			<template v-if="false">
 				<view class="vip-container">
-					<image class="vip-bg" src="/static/icons/icon_vip_bg.png" mode="widthFix"/>
-					<image class="vip-no" src="/static/icons/icon_vip_no.png" mode="widthFix"/>
-					<view  class="vip-title">点亮会员标志 享受尊贵特权</view>
+					<image class="vip-bg" src="/static/icons/icon_vip_bg.png" mode="widthFix" />
+					<image class="vip-no" src="/static/icons/icon_vip_no.png" mode="widthFix" />
+					<view class="vip-title">点亮会员标志 享受尊贵特权</view>
 				</view>
 			</template>
 		</view>
-		
+
 		<!-- 我的作品 -->
 		<view class="mines-zuopin-container">
 			<view class="mines-item" v-for="(item,index) in mines" :key="index" @click="mineItemsClick(item.title)">
@@ -73,7 +76,7 @@
 				<view>{{item.title}}</view>
 			</view>
 		</view>
-		
+
 		<view class="item-list">
 			<view class="list-group" v-for="(item,index) in dataList" :key="index">
 				<view class="item" v-for="(item2,index2) in item" :key="index2" @click="itemClick(item2.title)">
@@ -89,26 +92,26 @@
 			</view>
 		</view>
 	</scroll-view>
-	<!-- </view> -->
 	<myTabbar class="mine-tabbar" currentPath="/pages/mine/mine"></myTabbar>
 </template>
 
 <script>
-	import {mapState,mapMutations} from 'vuex'
+	import {
+		mapState,
+		mapMutations
+	} from 'vuex'
 	import myTabbar from '@/components/myTabbar/myTabbar';
 	export default {
-		comments:{
-			myTabbar 
+		comments: {
+			myTabbar
 		},
 		computed: {
-			
+
 		},
 
 		data() {
 			return {
-				//可滚动的区域
-				windowHeight:0,
-				userInfo: {},//this.$store.state.user_info,
+				userInfo: {},
 				dataList: [
 					[{
 							icon: '/static/icons/mine_photo.png',
@@ -142,70 +145,43 @@
 						{
 							icon: '/static/icons/mine_fapiao.png',
 							title: '开具发票'
-						},
-						{
-								icon: '/static/icons/mine_help.png',
-								title: '帮助中心'
-							},
-							{
-								icon: '/static/icons/mine_about_me.png',
-								title: '关于我们'
-							},
-							{
-								icon: '/static/icons/mine_fapiao.png',
-								title: '开具发票'
-							}
+						}
 					]
 				],
-				mines: [
-					{
-						icon:'/static/icons/mine_zuopin.png',
-						title:'我的作品'
+				mines: [{
+						icon: '/static/icons/mine_zuopin.png',
+						title: '我的作品'
 					},
 					{
-						icon:'/static/icons/mine_collect.png',
-						title:'我的收藏'
+						icon: '/static/icons/mine_collect.png',
+						title: '我的收藏'
 					},
 					{
-						icon:'/static/icons/mine_zan.png',
-						title:'我的点赞'
+						icon: '/static/icons/mine_zan.png',
+						title: '我的点赞'
 					},
 					{
-						icon:'/static/icons/mine_home_seen.png',
-						title:'浏览历史'
+						icon: '/static/icons/mine_home_seen.png',
+						title: '浏览历史'
 					}
 				]
 			};
 		},
- 
-		onReady() {
-		},
-		
+
+		onReady() {},
+
 		onLoad(options) {
-			//获取个人信息
-			// this.getUserInfo()
-			// this.userInfo = this.$store.state.user_info
-			const info = uni.getSystemInfoSync()
-			
-			this.windowHeight = info.screenHeight-info.statusBarHeight-info.safeAreaInsets.top-(info.safeAreaInsets.bottom > 0? 65:50)//(100+info.safeAreaInsets.bottom*0.5)/2;
-			
 			// console.log('mine - onLoad : ', '\n', info.screenTop,this.windowHeight,info.windowHeight,info)
 			//可以使用监听登录成功的方式刷新数据
 			// let that = this
 			// uni.$on('phoneLoginSuccess', function(data) {
 			// 	that.getUserInfo()
 			// })
-			
-			
 		},
-		
+
 		onShow() {
-			//每次页面显示的时候都会调用			
-			let param = uni.$api.apiCommonRequestParam
-			this.$set(param,'s_id',this.$store.state.s_id)
-			// this.$set(param, 'ccc','567')
-			console.log('test param ===',param,this.$store.state.s_id)
-			// this.getUserInfo()	
+			//获取个人信息 每次页面显示的时候都会调用			
+			this.getUserInfo()
 		},
 
 		onUnload() {
@@ -213,9 +189,8 @@
 		},
 
 		methods: {
-			...mapMutations(['saveUserInfo','saveLoginId']),
+			...mapMutations(['saveUserInfo', 'saveLoginId']),
 			itemClick(title) {
-
 				if (title === '帮助中心') {
 
 				} else if (title === '关于我们') {
@@ -226,10 +201,10 @@
 
 				}
 				//查看登陆状态
-				// else if (!this.login) {
-				// 	this.gotoLogin()
-				// 	return
-				// }
+				else if (this.$store.state.s_id === '') {
+					this.gotoLogin()
+					return
+				}
 			},
 
 			gotoLogin() {
@@ -242,44 +217,54 @@
 				if (this.$store.state.s_id === '') {
 					return
 				}
-				let param = uni.$api.apiCommonRequestParam 
-				this.$set(param,'s_id',this.store.state.s_id)
+				let param = uni.$api.apiCommonRequestParam
+				this.$set(param, 's_id', this.$store.state.s_id)
 				const {
 					data: res
 				} = await uni.$http.post(uni.$api.apiUserIndex, param, false)
 				if (res.code !== '200') return uni.$showMsg()
-				if(res.result.status === 1){
+				if (res.result.status === 1) {
 					//请求成功
-					this.userInfo = res.result.data 
-				}
-				else{
-					uni.$showMsg(res.data.result.message)
+					this.userInfo = res.result.data
+				} else {
+					uni.$showMsg(res.result.message)
 					this.userInfo = {}
-					this.saveLoginId(this.userInfo)
+					this.saveLoginId({})
 				}
 				this.saveUserInfo(this.userInfo)
-				console.log('userInfo ===',this.userInfo.nickname ,res.result.data)
+				console.log('userInfo ===', this.userInfo.nickname, res.result.data)
 			},
-			
-			gotoUserHomePage(){
+
+			gotoUserHomePage() {
 				uni.navigateTo({
-					url:'/subpkg/userHomePage/userHomePage?user_id='+this.$store.state.user_id+'&mine=true'
+					url: '/subpkg/userHomePage/userHomePage?user_id=' + this.$store.state.user_id + '&mine=true'
 				})
 			},
-			
+
 			//我的作品/收藏/点赞/历史点击
-			mineItemsClick(title){
-				uni.showToast({
-					title:title,
-					icon:'none'
-				})
-				this.myFollowUser()
+			mineItemsClick(title) {
+				// uni.showToast({
+				// 	title:title,
+				// 	icon:'none'
+				// })
+				// this.myFollowUser()
+				if (title === '我的作品') {
+
+				} else if (title === '我的收藏') {
+					uni.navigateTo({
+						url: '/subpkg/mines/myCollect'
+					})
+				} else if (title === '我的点赞') {
+
+				} else if (title === '浏览历史') {
+
+				}
 			},
-			
+
 			//我的关注
-			myFollowUser(){
+			myFollowUser() {
 				uni.navigateTo({
-					url:'/subpkg/myFollowUser/myFollowUser'
+					url: '/subpkg/myFollowUser/myFollowUser'
 				})
 			}
 		}
@@ -287,6 +272,21 @@
 </script>
 
 <style lang="scss">
+	.mine-scroll {
+		width: 100%;
+		height: calc(100vh - 110rpx - constant(safe-area-inset-bottom)*0.4); // 兼容 IOS<11.2
+		height: calc(100vh - 110rpx - env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
+
+		::-webkit-scrollbar {
+		    display: none;
+		    width: 0 !important;
+		    height: 0 !important;
+		    -webkit-appearance: none;
+		    background: transparent;
+		    color: transparent;
+		  }
+	}
+
 	.not-login-info {
 		display: flex;
 		background-color: #fff;
@@ -324,81 +324,89 @@
 			}
 		}
 	}
-	
-	.login-info{
+
+	.login-info {
 		padding: 40rpx 20rpx 10rpx 20rpx;
 		background-color: #fff;
 		margin-bottom: 0px;
-		.info{
+
+		.info {
 			display: flex;
 			justify-content: space-between;
 		}
-		
-		.info-left{
+
+		.info-left {
 			display: flex;
-			.info-content{
+
+			.info-content {
 				margin-left: 10px;
 			}
 		}
-		
-		.avatar image{
+
+		.avatar image {
 			width: 120rpx;
 			height: 120rpx;
 			border-radius: 60rpx;
 		}
-		
-		.sex{
+
+		.sex {
 			width: 15px;
 			height: 15px;
 			margin-left: 5px;
 		}
-		
-		.name-content{
+
+		.name-content {
 			font-size: 40rpx;
 			display: flex;
 			align-items: center;
 		}
-		.identity-content{
+
+		.identity-content {
 			display: flex;
 			color: #848484;
 			font-size: 24rpx;
 		}
-		.realname-content{
+
+		.realname-content {
 			display: flex;
 			color: #fff;
 			font-size: 16rpx;
 			margin-top: 3px;
-			.realname{
+
+			.realname {
 				padding: 1px 3px;
 				background-color: #bbb;
 				border-radius: 2px;
 			}
-			.ispledge{
+
+			.ispledge {
 				margin-left: 5px;
 				padding: 1px 3px;
 				background-color: #bbb;
 				border-radius: 2px;
 			}
 		}
-		
-		.info-right{
+
+		.info-right {
 			font-size: 26rpx;
 			color: #848484;
 			margin-right: 0px;
 			margin-top: 10px;
 		}
-		
-		.count-content{
+
+		.count-content {
 			padding: 30rpx 50rpx 20rpx 50rpx;
 			display: flex;
 			justify-content: space-around;
+
 			.coin,
 			.follow,
-			.followed{
+			.followed {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				.title{
+
+				.title {
 					margin-top: 5px;
 					color: #848484;
 					font-size: 24rpx;
@@ -406,22 +414,25 @@
 			}
 		}
 	}
-	
-	.vip-container{
+
+	.vip-container {
 		margin-top: 30rpx;
-		background-color: #fff; 
-		padding-bottom: 0px;   
-		.vip-bg{
+		background-color: #fff;
+		padding-bottom: 0px;
+
+		.vip-bg {
 			width: 100%;
 			height: 190rpx;
 		}
-		.vip-no{
+
+		.vip-no {
 			position: absolute;
 			width: 100rpx;
 			margin-top: 40rpx;
 			right: 50rpx;
 		}
-		.vip-title{
+
+		.vip-title {
 			color: #ffe2a1;
 			position: absolute;
 			font-size: 26rpx;
@@ -433,7 +444,7 @@
 	.list-group {
 		background-color: #fff;
 		margin: 8px 8px;
-		border-radius: 5px;//$border-radius; 
+		border-radius: 5px; //$border-radius; 
 
 		.item {
 			padding: 24rpx 10px;
@@ -468,23 +479,25 @@
 		}
 	}
 
-	.item-list{
-		padding-bottom: 40px;
+	.item-list {
+		padding-bottom: 10px;
 	}
-	
-	.mines-zuopin-container{
+
+	.mines-zuopin-container {
 		display: flex;
 		justify-content: space-around;
 		margin: 8px;
 		background-color: #fff;
 		padding: 20rpx;
 		border-radius: 5px;
-		.mines-item{
+
+		.mines-item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			font-size: 24rpx;
-			image{
+
+			image {
 				width: 50rpx;
 				height: 50rpx;
 				margin-bottom: 5px;

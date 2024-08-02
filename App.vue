@@ -23,6 +23,8 @@
 	// 设置整个项目的背景色
 	page {
 		background-color: $background-color;
+		width: 100vw;
+		height: 100vh;
 	}
 
 	/* #endif */

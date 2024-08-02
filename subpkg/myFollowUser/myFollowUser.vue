@@ -34,9 +34,9 @@
 		
 		methods:{
 			async getMyFollowUser() {
-				// if (this.$store.state.s_id === '') {
-				// 	return
-				// }
+				if (this.$store.state.s_id === '') {
+					return
+				}
 				let param = uni.$api.apiCommonRequestParam  
 				this.$set(param,'s_id',this.$store.state.s_id)
 				const {data : res} = await uni.$http.post(uni.$api.apiMyFollowUser, param)
@@ -46,7 +46,6 @@
 				// 	this.dataList = [...this.followList,...res.result.data.data] 
 				// }
 				this.dataList = res.data
-				console.log('datalist=== ',this.dataList)
 			},
 			
 			gotoUserHomePage(user_id){

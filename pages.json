@@ -14,6 +14,7 @@
 			"style": {
 				"navigationBarTitleText": "作品",
 				"disableScroll": true
+				// "scrollIndicator":"none"
 			}
 		},
 		{
@@ -96,21 +97,23 @@
 			}
 		},
 		{
-			"path" : "subpkg/myCollect/myCollect",
+			"path" : "subpkg/mines/myCollect",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "我的收藏",
+				"disableScroll": true
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		// "navigationStyle": ,
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
+		"backgroundColor": "#f7f6f7",
+		"scrollIndicator":"none", // 不显示滚动条   
 		"app-plus": {
-			"background": "#efeff4"
+			"background": "#f7f6f7",
+			"scrollIndicator":"none" // 在APP平台都不显示滚动条
 		}
 	},
 	"tabBar": {

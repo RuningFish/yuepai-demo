@@ -64,3 +64,54 @@
 }
 
 
+/**********居中的选项卡************/
+.center-tab{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	background-color: #fff;
+	padding: 0px 80rpx;
+	height: 80rpx;
+	.center-tab-item {
+		// background-color: yellow;
+		font-size: 28rpx;
+		color: #686767;
+		line-height: 60rpx;
+	}
+	
+	.active {
+		color: #3b3a3a;
+		border-bottom: 2px solid $main-theme-color;
+	}	
+}
+
+/***********隐藏scroll-view滚动条***********/
+/* 解决小程序和app滚动条的问题 */
+/* #ifdef MP-WEIXIN || APP-PLUS */
+	.hide-scrollbar {
+		width: 100vw;
+		height: 100vh;
+		overflow: auto;
+	}
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+		color: transparent;
+	}
+/* #endif */ 
+		
+/* 解决H5 的问题 */
+/* #ifdef H5 */
+	uni-scroll-view .uni-scroll-view::-webkit-scrollbar {
+	/* 隐藏滚动条，但依旧具备可以滚动的功能 */
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+		color: transparent;
+	}
+/* #endif */

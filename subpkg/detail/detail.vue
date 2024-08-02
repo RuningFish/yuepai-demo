@@ -1,145 +1,147 @@
 <template>
-	<view class="detail-container" v-if="item.avatar">
-		<view class="info">
-			<view class="list-info-container">
-				<image class="list-avatar" :src="item.avatar"></image>
-				<view  class="list-info-right-container">
-					<view class="list-name-sex-container">
-						<view  class="list-name">{{item.nickname}}</view>
-						<image class="list-sex" :src="item.sex === 1 ? '/static/icons/sex_boy.png': '/static/icons/sex_girl.png'" mode=""></image>
-						<view  class="list-uonlinetime">{{item.uonlinetime}}</view>
-					</view>
-					<view class="identity-city-container">
-						<view  class="list-identity-city">{{item.identity}} | {{item.city_name}}</view>
-						<image class="list-shiming" src="/static/icons/mine_shiming_yes.png" v-if="item.realname"></image>
-						<image class="list-danbao"  src="/static/icons/mine_danbao_yes.png"  v-if="item.ispledge"></image>
+	<view class="hide-scrollbar">
+		<view class="detail-container" v-if="item.avatar">
+			<view class="info">
+				<view class="list-info-container">
+					<image class="list-avatar" :src="item.avatar"></image>
+					<view  class="list-info-right-container">
+						<view class="list-name-sex-container">
+							<view  class="list-name">{{item.nickname}}</view>
+							<image class="list-sex" :src="item.sex === 1 ? '/static/icons/sex_boy.png': '/static/icons/sex_girl.png'" mode=""></image>
+							<view  class="list-uonlinetime">{{item.uonlinetime}}</view>
+						</view>
+						<view class="identity-city-container">
+							<view  class="list-identity-city">{{item.identity}} | {{item.city_name}}</view>
+							<image class="list-shiming" src="/static/icons/mine_shiming_yes.png" v-if="item.realname"></image>
+							<image class="list-danbao"  src="/static/icons/mine_danbao_yes.png"  v-if="item.ispledge"></image>
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="info-right">
-				<!--  已关注/ 关注 -->
-				<image @click="followUserClick" class="follow-icon"
-					:src="item.isfollow ? '/static/icons/icon_detail_guanzhu_yes.png' :'/static/icons/icon_detail_guanzhu_no.png'"
-					mode="widthFix"></image>
-				<view class="tousu">投诉</view>
-			</view>
-		</view>
-		<view class="middle" v-if="groups[0].title">
-			<view class="item" v-for="(item,index) in groups" :key="index">
-				<image class="icon" :src="item.icon"></image>
-				<view>{{item.title}}</view>
-			</view>
-		</view>
-		<!-- 约拍要求 -->
-		<view class="yupai-content">
-			<view class="title">
-				<view class="">{{page_type === 1? '作品名称/描述':'约拍要求'}}</view>
-			</view>
-			<view class="content">
-				<!-- <view class="">约拍要求</view> -->
-				{{item.content}}
-			</view>
-			<view class="time" v-if="item.time">
-				<view class="time-title">时间：</view>
-				<view>{{item.time}}</view>
-			</view>
-			<view class="fanpian" v-if="item.isfanpian && page_type == 1">
-				<view class="fanpian-title">约拍返片：</view>
-				<view>约拍返片</view>
-			</view>
-			<view class="location" v-if="item.location">
-				<view class="location-title">地点：</view>
-				<view>{{item.location}}</view>
-			</view>
-			<view class="device" v-if="item.device && page_type == 1">
-				<view class="device-title">设备：</view>
-				<view>{{item.device}}</view>
-			</view>
-			<view class="fanpian" v-if="item.fanpian && page_type == 0">
-				<view class="location-title">成片：</view>
-				<view>{{item.fanpian}}</view>
-			</view>
-		</view>
-		<!-- 显示视频-->
-		<view class="video-container" v-if="video">
-			<video class="video-player" style="margin-left:10px;width: 350rpx;height: 510rpx;"
-				:src="item.video"></video>
-		</view>
-		<!-- 图片 -->
-		<view class="yupai-image" v-else>
-			<view class="" v-for="(item2,index2) in item.imgUrl" :key="index2">
-				<image :src="item2.bigurl" mode="widthFix" @click="previewImage(index2,item.imgUrl)"></image>
-			</view>
-		</view>
-		<!-- 标签区域 -->
-		<view class="item-tags">
-			<view class="tag" v-for="(item3,index3) in item.tags" :key="index3">{{item3.name}}</view>
-		</view>
-		<!-- 阅读量区域 -->
-		<view class="item-bottom">
-			<view class="item-bottom-left">
-				<view class="timetext">{{item.timetext}}</view>
-				<view class="meet_count" v-if="item.meet_count">收到的约拍{{item.meet_count}}</view>
-			</view>
-			<view class="item-bottom-right">
-				<view class="view_count">阅读 {{item.view_count}}</view>
-				<view class="collect_count">赞 {{item.collect_count}}</view>
-			</view>
-		</view>
-		<!-- 收到的约拍 -->
-		<view class="regAvatarList"
-			v-show="regAvatarList !== undefined && regAvatarList !== null && regAvatarList.length>0">
-			<view class="title">
-				<view>收到的约拍：{{regAvatarList.length}}</view>
-			</view>
-			<view class="images">
-				<image mode="widthFix" :src="item5.avatar" v-for="(item5,index5) in regAvatarList" :key="index5">
-				</image>
-			</view>
-		</view>
-		<!-- 作品 -->
-		<view class="zuopin" v-show="item.zuopin !== undefined && item.zuopin !== null && item.zuopin.length>0">
-			<view class="title">
-				<view class="title-left">
-					<view>{{item.sex === 1?'他':'她'}}的作品</view>
+				<view class="info-right">
+					<!--  已关注/ 关注 -->
+					<image @click="followUserClick" class="follow-icon"
+						:src="item.isfollow ? '/static/icons/icon_detail_guanzhu_yes.png' :'/static/icons/icon_detail_guanzhu_no.png'"
+						mode="widthFix"></image>
+					<view class="tousu">投诉</view>
 				</view>
-				<view class="title-right" @click="gotoHomePage">{{item.sex === 1?'他':'她'}}的主页 ></view>
 			</view>
-			<view class="images">
-				<scroll-view class="image-scroll" scroll-x="true">
-					<image mode="aspectFill" :src="item4.origurl" v-for="(item4,index4) in item.zuopin" :key="index4"
-						@click="previewImage(index4,item.zuopin)"></image>
-				</scroll-view>
+			<view class="middle" v-if="groups[0].title">
+				<view class="item" v-for="(item,index) in groups" :key="index">
+					<image class="icon" :src="item.icon"></image>
+					<view>{{item.title}}</view>
+				</view>
+			</view>
+			<!-- 约拍要求 -->
+			<view class="yupai-content">
+				<view class="title">
+					<view class="">{{page_type === 1? '作品名称/描述':'约拍要求'}}</view>
+				</view>
+				<view class="content">
+					<!-- <view class="">约拍要求</view> -->
+					{{item.content}}
+				</view>
+				<view class="time" v-if="item.time">
+					<view class="time-title">时间：</view>
+					<view>{{item.time}}</view>
+				</view>
+				<view class="fanpian" v-if="item.isfanpian && page_type == 1">
+					<view class="fanpian-title">约拍返片：</view>
+					<view>约拍返片</view>
+				</view>
+				<view class="location" v-if="item.location">
+					<view class="location-title">地点：</view>
+					<view>{{item.location}}</view>
+				</view>
+				<view class="device" v-if="item.device && page_type == 1">
+					<view class="device-title">设备：</view>
+					<view>{{item.device}}</view>
+				</view>
+				<view class="fanpian" v-if="item.fanpian && page_type == 0">
+					<view class="location-title">成片：</view>
+					<view>{{item.fanpian}}</view>
+				</view>
+			</view>
+			<!-- 显示视频-->
+			<view class="video-container" v-if="video">
+				<video class="video-player" style="margin-left:10px;width: 350rpx;height: 510rpx;"
+					:src="item.video"></video>
+			</view>
+			<!-- 图片 -->
+			<view class="yupai-image" v-else>
+				<view class="" v-for="(item2,index2) in item.imgUrl" :key="index2">
+					<image :src="item2.bigurl" mode="widthFix" @click="previewImage(index2,item.imgUrl)"></image>
+				</view>
+			</view>
+			<!-- 标签区域 -->
+			<view class="item-tags">
+				<view class="tag" v-for="(item3,index3) in item.tags" :key="index3">{{item3.name}}</view>
+			</view>
+			<!-- 阅读量区域 -->
+			<view class="item-bottom">
+				<view class="item-bottom-left">
+					<view class="timetext">{{item.timetext}}</view>
+					<view class="meet_count" v-if="item.meet_count">收到的约拍{{item.meet_count}}</view>
+				</view>
+				<view class="item-bottom-right">
+					<view class="view_count">阅读 {{item.view_count}}</view>
+					<view class="collect_count">赞 {{item.collect_count}}</view>
+				</view>
+			</view>
+			<!-- 收到的约拍 -->
+			<view class="regAvatarList"
+				v-show="regAvatarList !== undefined && regAvatarList !== null && regAvatarList.length>0">
+				<view class="title">
+					<view>收到的约拍：{{regAvatarList.length}}</view>
+				</view>
+				<view class="images">
+					<image mode="widthFix" :src="item5.avatar" v-for="(item5,index5) in regAvatarList" :key="index5">
+					</image>
+				</view>
+			</view>
+			<!-- 作品 -->
+			<view class="zuopin" v-show="item.zuopin !== undefined && item.zuopin !== null && item.zuopin.length>0">
+				<view class="title">
+					<view class="title-left">
+						<view>{{item.sex === 1?'他':'她'}}的作品</view>
+					</view>
+					<view class="title-right" @click="gotoHomePage">{{item.sex === 1?'他':'她'}}的主页 ></view>
+				</view>
+				<view class="images">
+					<scroll-view class="image-scroll" scroll-x="true">
+						<image mode="aspectFill" :src="item4.origurl" v-for="(item4,index4) in item.zuopin" :key="index4"
+							@click="previewImage(index4,item.zuopin)"></image>
+					</scroll-view>
+				</view>
+			</view>
+			<!-- 推荐约拍 -->
+			<view class="recommend-list"
+				v-if="item.recommend_list !== undefined && item.recommend_list !== null && item.recommend_list.length >0">
+				<view id="title">
+					- 推荐约拍 -
+				</view>
+				<!-- 推荐列表 -->
+				<view class="recommend-item" v-for="(item5,index5) in item.recommend_list" :key="index5">
+					<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)">
+					</listCardItem>
+				</view>
 			</view>
 		</view>
-		<!-- 推荐约拍 -->
-		<view class="recommend-list"
-			v-if="item.recommend_list !== undefined && item.recommend_list !== null && item.recommend_list.length >0">
-			<view id="title">
-				- 推荐约拍 -
+		<!-- 点赞/收藏 -->
+		<view class="bottom-container">
+			<view class="bottom-left">
+				<view class="icon_item" @click="likeIconClick">
+					<image class="like"
+						:src="item.islike ? '/static/icons/icon_bottom_like_yes.png' : '/static/icons/icon_bottom_like.png'" />
+					<view class="like-count">{{item.like_count === 0 ? '':item.like_count}}</view>
+				</view>
+				<view class="icon_item" @click="collectIconClick">
+					<image class="collect"
+						:src="item.iscollect ? '/static/icons/icon_bottom_collect_yes.png' : '/static/icons/icon_bottom_collect.png'" />
+				</view>
 			</view>
-			<!-- 推荐列表 -->
-			<view class="recommend-item" v-for="(item5,index5) in item.recommend_list" :key="index5">
-				<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)">
-				</listCardItem>
+			<view class="bottom-right">
+				<view class="bottom-right-yuepai">立即约拍</view>
 			</view>
-		</view>
-	</view>
-	<!-- 点赞/收藏 -->
-	<view class="bottom-container">
-		<view class="bottom-left">
-			<view class="icon_item" @click="likeIconClick">
-				<image class="like"
-					:src="item.islike ? '/static/icons/icon_bottom_like_yes.png' : '/static/icons/icon_bottom_like.png'" />
-				<view class="like-count">{{item.like_count === 0 ? '':item.like_count}}</view>
-			</view>
-			<view class="icon_item" @click="collectIconClick">
-				<image class="collect"
-					:src="item.iscollect ? '/static/icons/icon_bottom_collect_yes.png' : '/static/icons/icon_bottom_collect.png'" />
-			</view>
-		</view>
-		<view class="bottom-right">
-			<view class="bottom-right-yuepai">立即约拍</view>
 		</view>
 	</view>
 </template>
@@ -388,7 +390,7 @@
 
 <style lang="scss">
 	.detail-container {
-		padding-bottom: 260px;
+		padding-bottom: 150rpx;
 	}
 
 	.info {
@@ -637,7 +639,7 @@
 
 		#title {
 			line-height: 30px;
-			color: rgb(232, 153, 154);
+			color: $main-theme-color;
 			text-align: center;
 		}
 	}
