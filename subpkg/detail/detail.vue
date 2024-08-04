@@ -34,7 +34,7 @@
 			<!-- 约拍要求 -->
 			<view class="yupai-content">
 				<view class="title">
-					<view class="">{{page_type === 1? '作品名称/描述':'约拍要求'}}</view>
+					<view class="">{{page_type === 2? '作品名称/描述':'约拍要求'}}</view>
 				</view>
 				<view class="content">
 					<!-- <view class="">约拍要求</view> -->
@@ -44,7 +44,7 @@
 					<view class="time-title">时间：</view>
 					<view>{{item.time}}</view>
 				</view>
-				<view class="fanpian" v-if="item.isfanpian && page_type == 1">
+				<view class="fanpian" v-if="item.isfanpian && page_type === 2">
 					<view class="fanpian-title">约拍返片：</view>
 					<view>约拍返片</view>
 				</view>
@@ -52,7 +52,7 @@
 					<view class="location-title">地点：</view>
 					<view>{{item.location}}</view>
 				</view>
-				<view class="device" v-if="item.device && page_type == 1">
+				<view class="device" v-if="item.device && page_type === 2">
 					<view class="device-title">设备：</view>
 					<view>{{item.device}}</view>
 				</view>
@@ -160,7 +160,13 @@
 		mixins: [$mixin],
 		data() {
 			return {
-				param: $api.apiCommonRequestParam,
+				param: {
+					appid:$appConfig.appid,
+					appkey:$appConfig.appkey,
+					platform:$appConfig.platform,
+					version:$appConfig.version,
+					s_id:this.$store.state.s_id
+				},
 				//详情
 				item: {},
 				groups: [{
@@ -178,19 +184,18 @@
 				],
 				//收到的约拍
 				regAvatarList: [],
-				page_type: 0, //0从首页列表页面及详情页面进入 1.从作品页面进入
+				page_type: 1, // 1.约拍详情 2.作品详情
 				video: false //是否是视频
 			};
 		},
 
 		onLoad(options) {
-			console.log('text---', options);
 			if (options.item_id === '' || options.item_id === null) return
 			this.$set(this.param, 'item_id', options.item_id)
 			let title = '约拍详情'
 			//判断是否是作品页面进入
 			if (options.type !== null && options.type === 'production') {
-				this.page_type = 1
+				this.page_type = 2
 				title = '作品详情'
 				this.getApiGetItem()
 			} else {
@@ -206,10 +211,9 @@
 
 		methods: {
 			async getDetail() {
-				console.log('详情页param---', this.param);
 				const {
 					data: res
-				} = await uni.$http.post($api.apiGetDetail, this.param)
+				} = await uni.$http.post(uni.$api.apiGetDetail, this.param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.item = res.result.data
 				this.groups[0].title = '面向' + this.item.city_name
@@ -221,22 +225,19 @@
 			async getRegAvatarList() {
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/yuepai/getRegAvatarList', this.param)
+				} = await uni.$http.post(uni.$api.apiGetRegAvatarList, this.param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.regAvatarList = res.result.data.data
-				console.log('详情页约拍数据---', this.regAvatarList)
 			},
 
 			// 请求作品详情-从作品页面进入
 			async getApiGetItem() {
-				console.log('详情页param---', this.param)
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/zuopin/apiGetItem', this.param)
+				} = await uni.$http.post(uni.$api.apiGetItem, this.param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.item = res.result.data
 				this.checkVideo()
-				console.log('详情页数据---zuopin', res, this.groups)
 			},
 
 			checkVideo() {
@@ -254,7 +255,6 @@
 			},
 			//查看图片
 			previewImage(index, images) {
-				console.log('详情页查看图片---', images, index)
 				uni.previewImage({
 					current: index,
 					urls: images.map(img => img.bigurl)
@@ -262,7 +262,6 @@
 			},
 			//跳转个人主页
 			gotoHomePage() {
-				console.log("----------------gotoHomePage")
 				uni.navigateTo({
 					url: '/subpkg/userHomePage/userHomePage?user_id=' + this.item.user_id
 				})
@@ -280,40 +279,6 @@
 						this.item.isfollow = true
 					})
 				}
-				// if (this.$store.state.s_id === '') {
-				// 	//跳转登录页面
-				// 	uni.navigateTo({
-				// 		url: '/subpkg/login/wxLogin'
-				// 	})
-				// } else if (this.item.isfollow) {
-				// 	uni.showModal({
-				// 		cancelText: '取消',
-				// 		confirmText: '确定',
-				// 		title: '温馨提示',
-				// 		content: '确定要取消关注对方吗？',
-				// 		success: function(res){
-				// 			if (res.confirm) {
-				// 				this.unFollowUser(() => {
-				// 					this.item.isfollow = false
-				// 					uni.showToast({
-				// 						title: '取消成功',
-				// 						icon: 'success'
-				// 					})
-				// 				})
-				// 			} else if (res.cancel) {
-				// 				console.log('cancel')
-				// 			}
-				// 		}.bind(this)
-				// 	})
-				// } else if (!this.item.isfollow) {
-				// 	this.followUser(() => {
-				// 		this.item.isfollow = true
-				// 		uni.showToast({
-				// 			title: '关注成功',
-				// 			icon: 'success'
-				// 		})
-				// 	})
-				// }
 			},
 			
 			async likeIconClick(){
@@ -325,10 +290,10 @@
 					return
 				}
 				
-				let param = $api.apiCommonRequestParam
+				let param = uni.$api.apiCommonRequestParam
 				this.$set(param,'s_id',this.$store.state.s_id)
 				this.$set(param, 'item_id',this.item.item_id)
-				this.$set(param, 'type','1')
+				this.$set(param, 'type',String(this.page_type))
 				
 				if(this.item.islike){
 					//已点赞 =>取消点赞
@@ -338,6 +303,8 @@
 						this.item.islike = false
 						this.item.like_count -= 1
 					}
+					//需要更新列表数据
+					uni.$emit('updateMinesDataList')
 				}
 				else{
 					const { data: res } = await uni.$http.post($api.apiLike, param)
@@ -349,6 +316,8 @@
 							title:'点赞成功',
 							icon:'none'
 						})
+						//需要更新列表数据
+						uni.$emit('updateMinesDataList')
 					}
 				}
 			},
@@ -366,7 +335,7 @@
 				let param = $api.apiCommonRequestParam
 				this.$set(param,'s_id',this.$store.state.s_id)
 				this.$set(param, 'item_id',this.item.item_id)
-				this.$set(param, 'type','1')
+				this.$set(param, 'type',String(this.page_type))
 				
 				if(this.item.iscollect){
 					//已收藏 =>取消收藏
@@ -374,6 +343,8 @@
 					if (res.code !== '200') return uni.$showMsg()
 					if(res.result.status === 1){
 						this.item.iscollect = false
+						//需要更新列表数据
+						uni.$emit('updateMinesDataList')
 					}
 				}
 				else{
@@ -381,6 +352,8 @@
 					if (res.code !== '200') return uni.$showMsg()
 					if(res.result.status === 1){
 						this.item.iscollect = true
+						//需要更新列表数据
+						uni.$emit('updateMinesDataList')
 					}
 				}
 			},
@@ -410,6 +383,7 @@
 			}
 			.list-name{
 				font-size:36rpx;
+				max-width: 210rpx;
 			}
 		}
 
@@ -419,7 +393,7 @@
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
-			margin-right: 10px;
+			margin-right: 20rpx;
 
 			.tousu {
 				margin-top: 5px;
@@ -659,6 +633,7 @@
 		z-index: 999;
 		display: flex;
 		justify-content: space-between;
+		padding-bottom: 0;
 
 		.bottom-left {
 			display: flex;

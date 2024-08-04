@@ -24,6 +24,10 @@
 .list-name{
 	font-size:30rpx;
 	color:#333333;
+	max-width: 500rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 //性别
 .list-sex{
@@ -36,6 +40,7 @@
 	margin-left: 10rpx;
 	font-size: 20rpx;
 	color: #b4b0b1;
+	white-space: nowrap;
 }
 //职业&城市
 .identity-city-container{
@@ -115,3 +120,17 @@
 		color: transparent;
 	}
 /* #endif */
+
+
+/*********没有更多提示***********/
+.nomore-container {
+	height: 60px;
+	.text {
+		font-size: 26rpx;
+		display: flex;
+		justify-content: center;
+		padding-top: 15px;
+		color: lightgray;
+	}
+
+}

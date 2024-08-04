@@ -75,9 +75,7 @@
 		methods:{
 			itemClick(item){
 				if(item.url !== ''){
-					uni.navigateTo({
-						url:'/subpkg/webview/webview?url='+item.url
-					}) 
+					uni.$router.gotoWebView(item.url)
 				}
 				else{
 					uni.showModal({

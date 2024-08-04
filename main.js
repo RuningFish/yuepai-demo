@@ -3,29 +3,30 @@
 import { $http } from '@/request/http.js'
 import { $appConfig } from './config/appConfig'
 import { $api } from './request/api' 
+import { $router } from './utils/nav-router'
 
 //挂载到uni下 方便全局调用
 uni.$http = $http
 uni.$appConfig = $appConfig
 uni.$api  = $api
+uni.$router = $router
 
 //请求的baseUrl
 $http.baseUrl = 'https://api.mdyuepai.com'
 
 $http.beforeRequest = function(options){
-	
 	uni.showLoading({
 		title:'加载中...'
 	})
 }
 
 $http.requestSuccess = function(res){
-	// if(res.data.result.status !== undefined && res.data.result.status === -999){
-	// 	//登录状态已丢失
-	// 	uni.setStorageSync('s_id','')
-	// 	uni.setStorageSync('user_id','')
-	// 	uni.$showMsg(res.data.result.message)
-	// }
+	if(res.data.result.status !== undefined && res.data.result.status === -999){
+		//登录状态已丢失
+		uni.setStorageSync('s_id','')
+		uni.setStorageSync('user_id','')
+		uni.$showMsg(res.data.result.message)
+	}
 }
 
 $http.afterRequest = function(options){

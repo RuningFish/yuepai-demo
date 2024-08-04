@@ -90,18 +90,32 @@
 			}
 		},
 		{
-			"path" : "subpkg/myFollowUser/myFollowUser",
-			"style" : 
-			{
-				"navigationBarTitleText" : "我的关注"
-			}
-		},
-		{
 			"path" : "subpkg/mines/myCollect",
 			"style" : 
 			{
 				"navigationBarTitleText" : "我的收藏",
 				"disableScroll": true
+			}
+		},
+		{
+			"path" : "subpkg/mines/myLike",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的点赞"
+			}
+		},
+		{
+			"path" : "subpkg/mines/myViewed",
+			"style" : 
+			{
+				"navigationBarTitleText" : "浏览历史"
+			}
+		},
+		{
+			"path" : "subpkg/mines/myFollowUser",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的关注"
 			}
 		}
 	],
@@ -123,7 +137,7 @@
 			{
 				"pagePath": "pages/home/home"
 				// "text": "首页",
-				// "iconPath": "/static/icons/home_main.png",
+				// "iconPath": "/static/icons/home_main.png"
 				// "selectedIconPath": "static/icons/home_main_active.png"
 			},
 			{
@@ -134,8 +148,8 @@
 			},
 			{
 				"pagePath": "pages/publish/publish"
-				// "text": "发布"
-				// "iconPath": "static/tabbar-icons/home.png",
+				// "text": "发布",
+				// "iconPath": "static/icons/fabu.png"
 				// "selectedIconPath": "static/tabbar-icons/home-active.png"
 			},
 			{

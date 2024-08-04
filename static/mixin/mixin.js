@@ -11,9 +11,7 @@ const mixin = {
 		async followUser(to_user_id, callBack) {			
 			if (this.$store.state.s_id === '') {
 				//跳转登录页面
-				uni.navigateTo({
-					url: '/subpkg/login/wxLogin'
-				})
+				uni.$router.gotoWxLogin()
 			}
 			else {
 				let param = uni.$api.apiCommonRequestParam
@@ -29,6 +27,8 @@ const mixin = {
 						title: '已关注',
 						icon: 'success'
 					})
+					//需要更新列表数据
+					uni.$emit('updateMinesDataList')
 				}
 			}
 		},
@@ -59,6 +59,7 @@ const mixin = {
 					title: '取消成功',
 					icon: 'success'
 				})
+				uni.$emit('updateMinesDataList')
 			}
 		}
 	}

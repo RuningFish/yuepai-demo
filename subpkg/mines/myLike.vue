@@ -9,7 +9,7 @@
 		<swiper class="hor-swiper" :current="selectedIndex" :indicator-dots="false" :autoplay="false" @change="tabChange">
 			<swiper-item v-for="(item,index) in tabList" :key="index">
 				<scroll-view id="200" class="list-scroll" :scroll-y="true" @scrolltolower="scrolltolower" :lower-threshold="100" :scroll-anchoring="true"
-					refresher-enabled="true" :refresher-triggered="triggered" :refresher-threshold="100" @refresherrefresh="onRefresh">
+					refresher-enabled="true" :refresher-triggered="triggered" :refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling">
 					<view v-if="dataList[index] && dataList[index].list">
 						<view v-for="(item1,index1) in dataList[index].list" :key="index1">
 							<homePageCardItem :item="item1" @itemClick="itemClick(item1)"
@@ -28,15 +28,15 @@
 </template>
 
 <script>
-	import { $pageLoadMore } from '../../static/mixin/page-load-more';
-	export default { 
+	import { $pageLoadMore } from '../../static/mixin/page-load-more.js'
+	export default {
 		mixins:[$pageLoadMore],
 		data() {
 			return {
 				
 			};
 		},
-
+		
 		onLoad(options) {
 			let that = this
 			uni.$on('updateMinesDataList',function(){
@@ -50,23 +50,16 @@
 			uni.$off('updateMinesDataList')
 		},
 		
-		methods: {
+		methods:{
 		  async	getDataList(){
 				let param = this.getRequestParam()
-				const { data: res } = await uni.$http.post(uni.$api.apiMyCollect, param)
+				const { data: res } = await uni.$http.post(uni.$api.apiMyLike, param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading(res)
 			},
 			
 			itemClick(item){
-				// var url = '/subpkg/detail/detail?item_id=' + item.item_id
-				// if (this.selectedIndex === 1) {
-				// 	url += '&type=production'
-				// }
-				// uni.navigateTo({
-				// 	url: url
-				// })
-				let item_id = item.item_id
+				var item_id = item.item_id
 				if (this.selectedIndex === 1) {
 					item_id += '&type=production'
 				}

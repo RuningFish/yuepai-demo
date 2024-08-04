@@ -44,6 +44,7 @@
 	// import store from '@/store/store.js'
 	import {mapState,mapMutations} from 'vuex'
 	import myTabbar from '@/components/myTabbar/myTabbar';
+import { $api } from '../../request/api';
 	export default {
 		comments:{
 			myTabbar
@@ -100,49 +101,42 @@
 			//获取banner
 			async getBanner(){
 				let param = {
-						'place':1,
-						's_id':'',
-						'version':'4.0.10',
-						'platform':'mdyp_wxminapp_ios',
-						'appid':'1601574',
+						appid:uni.$appConfig.appid,
+						platform:uni.$appConfig.platform,
+						version:uni.$appConfig.version,
+						place:'1',
+						s_id:''
 				}
-				const {data:res} = await uni.$http.get('/appapi/Banner/apiGetList?place=1&s_id=&version=4.0.10&platform=mdyp_wxminapp_ios&appid=1601574&appkey=&sign=&timestamp=1721400594934')
+				const {data:res} = await uni.$http.get(uni.$api.apiGetBannerList,param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.banner = res.result.data.banner
-				console.log('首页banner---',res,this.banner);
 			},
 			//获取小程序
 			async getMiniAppSetInfor(){
 				this.isloading = true
-				const {data:res} = await uni.$http.get('/appapi/setInfor/getMiniAppSetInfor')
+				const {data:res} = await uni.$http.get(uni.$api.apiGetMiniAppSetInfor)
 				if (res.code !== '200') return uni.$showMsg()
 				this.miniAppData = res.result.data
 				this.mini_app_show_visible = this.miniAppData.app_nav.show_visible
 				this.mini_app_list = this.miniAppData.app_nav.list
-				console.log('首页小程序---',this.miniAppData);
 				this.isloading = false
 				//存储当前的城市信息
 				this.updateCurrentCityInfo(this.miniAppData.current_city)
 			},
 			//获取推荐列表
 			async getRecommendList(index){
-				console.log('getRecommendList---index',index);
 				let param = this.getRequestParam(index)
 				this.isloading = true
-				const {data:res} = await uni.$http.post('/appapi/Yuepai/apiGetRecommendList',param)
+				const {data:res} = await uni.$http.post(uni.$api.apiGetRecommendList,param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading()
 				this.recommendList[index] = [...this.recommendList[index],...res.result.data.data]
 				this.lastTime[index] = res.result.data.nexttime
-				console.log('首页推荐---',this.recommendList[index].length);
 			},
 			
 			//跳转到详情页面
 			itemClick(item){
-				console.log('-------跳转到详情页面')
-				uni.navigateTo({
-					url:'/subpkg/detail/detail?item_id='+item.item_id
-				})
+				uni.$router.gotoDetail(item.item_id)
 			},
 			//查看图片
 			previewImage(index,images){
@@ -153,14 +147,12 @@
 			},
 			//banner 跳转
 			bannerClick(item){
-				uni.navigateTo({
-					url:'/subpkg/webview/webview?url='+'https://m.mdyuepai.com/m/about/zhubozhaomu.html'+'&title='+item.title
-				})
+				let url = 'https://m.mdyuepai.com/m/about/zhubozhaomu.html'+'&title='+item.title
+				uni.$router.gotoWebView(url)
 			},
 			
 			tabChange(e){
 				let index = e.target.current || e.detail.current
-				console.log('tabChange---');
 				if(this.selectedIndex === index) return
 				this.$refs.myTabs.itemIndexChange(index)
 			},
@@ -179,7 +171,7 @@
 			async apiGetList(index){
 				let param = this.getRequestParam(index)
 				this.isloading = true
-				const {data:res} = await uni.$http.post('/appapi/Yuepai/apiGetList',param)
+				const {data:res} = await uni.$http.post(uni.$api.apiGetYuepaiList,param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading()
 				this.recommendList[index] = [...this.recommendList[index],...res.result.data.data]
@@ -223,13 +215,13 @@
 			//上拉加载
 			 scrolltolower() {
 				console.log('loadMore-----','data');
-			 //    if (this.isloading) return
-			 // 	if(this.selectedIndex === 0){
-				// 	this.getRecommendList(this.selectedIndex)
-				// }
-				// else{
-				// 	this.apiGetList(this.selectedIndex)
-				// }
+			    if (this.isloading) return
+			 	if(this.selectedIndex === 0){
+					this.getRecommendList(this.selectedIndex)
+				}
+				else{
+					this.apiGetList(this.selectedIndex)
+				}
 			 },
 			 
 			 stopLoading(){

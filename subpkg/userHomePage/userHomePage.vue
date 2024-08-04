@@ -22,8 +22,8 @@
 							</view>
 						</view>
 					</view>
-					<view class="info-right" v-if="mine === undefined || mine === false">
-						<view class="isfollow">+ 关注</view>
+					<view class="info-right" v-if="!userInfo.isself">
+						<view class="isfollow" @click="followUserClick">{{userInfo.isfollow ? '已关注' : '+ 关注'}}</view>
 						<view class="tousu">投诉</view>
 					</view>
 				</view>
@@ -69,8 +69,10 @@
 								<!-- refresher-enabled="true" :refresher-threshold="100" @refresherrefresh="onRefresh"
 							@refresherpulling="onPulling"  -->
 							</view>
-							<view class="nomore-container" v-if="!dataList[index].hasNomore">
-								<view class="content">已全部加载完毕</view>
+							<view class="nomore-container" v-if="dataList[index] && dataList[index].list">
+								<template v-if="dataList[index].list.length > 0 && !dataList[index].hasNomore">
+									<view class="text">已全部加载完毕</view>
+								</template>
 							</view>
 						</scroll-view>
 					</swiper-item>
@@ -86,7 +88,10 @@
 </template>
 
 <script>
+	import { $api } from '../../request/api';
+	import { $mixin } from '../../static/mixin/mixin'
 	export default {
+		mixins:[$mixin],
 		data() {
 			return {
 				//用户id
@@ -167,7 +172,7 @@
 			async getUserInfo() {
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/user/apiUsershow', this.requestParam())
+				} = await uni.$http.post($api.apiUsershow, this.requestParam())
 				if (res.code !== '200') return uni.$showMsg()
 				this.userInfo = res.result.data
 				uni.setNavigationBarTitle({
@@ -178,7 +183,7 @@
 			async getUserYuepai() {
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/yuepai/apiUserYuepai', this.requestParam())
+				} = await uni.$http.post($api.apiUserYuepai, this.requestParam())
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading(res)
 				// console.log('个人主页约拍数据---', this.dataList[this.selectedIndex])
@@ -194,16 +199,16 @@
 			async getUserZuopin() {
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/zuopin/apiUserZuopin', this.requestParam())
+				} = await uni.$http.post($api.apiUserZuopin, this.requestParam())
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading(res)
-				// console.log('个人主页作品数据---', this.dataList[this.selectedIndex])
 			},
 
 			requestParam() {
 				let param = {
 					user_id: this.user_id,
-					time: this.dataList[this.selectedIndex].time || ''
+					time: this.dataList[this.selectedIndex].time || '',
+					s_id:this.$store.state.s_id
 				}
 				return param
 			},
@@ -345,6 +350,10 @@
 				this.triggered = false
 				this.isloading = false
 				this.pull = false
+				if(res.result.data.data.length === 0){
+					this.dataList[this.selectedIndex].hasNomore = false
+					return
+				}
 				//将新请求到的数据加到原数据中
 				this.dataList[this.selectedIndex].list = [...this.dataList[this.selectedIndex].list, ...res.result.data
 					.data
@@ -361,13 +370,11 @@
 
 			//跳转到详情页面
 			itemClick(item) {
-				var url = '/subpkg/detail/detail?item_id=' + item.item_id
+				let item_id = item.item_id
 				if (this.selectedIndex === 1) {
-					url += '&type=production'
+					item_id += '&type=production'
 				}
-				uni.navigateTo({
-					url: url
-				})
+				uni.$router.gotoDetail(item_id)
 			},
 			//查看图片
 			previewImage(index, images) {
@@ -375,6 +382,20 @@
 					current: index,
 					urls: images.map(img => img.bigurl)
 				})
+			},
+			
+			//关注
+			followUserClick(){
+				if (this.userInfo.isfollow) {
+					this.unFollowUser(this.userInfo.user_id, () => {
+						this.userInfo.isfollow = false
+					})
+					
+				} else {
+					this.followUser(this.userInfo.user_id, () => {
+						this.userInfo.isfollow = true
+					})
+				}
 			}
 		}
 	}

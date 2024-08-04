@@ -194,9 +194,7 @@
 				if (title === '帮助中心') {
 
 				} else if (title === '关于我们') {
-					uni.navigateTo({
-						url: '/subpkg/about/about'
-					})
+					uni.$router.gotoAbout()
 				} else if (title === '开具发票') {
 
 				}
@@ -208,9 +206,7 @@
 			},
 
 			gotoLogin() {
-				uni.navigateTo({
-					url: '/subpkg/login/wxLogin'
-				})
+				uni.$router.gotoWxLogin()
 			},
 
 			async getUserInfo() {
@@ -232,13 +228,11 @@
 					this.saveLoginId({})
 				}
 				this.saveUserInfo(this.userInfo)
-				console.log('userInfo ===', this.userInfo.nickname, res.result.data)
 			},
 
 			gotoUserHomePage() {
-				uni.navigateTo({
-					url: '/subpkg/userHomePage/userHomePage?user_id=' + this.$store.state.user_id + '&mine=true'
-				})
+				let user_id = this.$store.state.user_id + '&mine=true'
+				uni.$router.gotoUserHomePage(user_id)
 			},
 
 			//我的作品/收藏/点赞/历史点击
@@ -248,24 +242,21 @@
 				// 	icon:'none'
 				// })
 				// this.myFollowUser()
+				let url = ''
 				if (title === '我的作品') {
 
 				} else if (title === '我的收藏') {
-					uni.navigateTo({
-						url: '/subpkg/mines/myCollect'
-					})
+					uni.$router.gotoMyCollect()
 				} else if (title === '我的点赞') {
-
+					uni.$router.gotoMyLike()
 				} else if (title === '浏览历史') {
-
+					uni.$router.gotoMyViewed()
 				}
 			},
 
 			//我的关注
 			myFollowUser() {
-				uni.navigateTo({
-					url: '/subpkg/myFollowUser/myFollowUser'
-				})
+				uni.$router.gotoMyFollowUser()
 			}
 		}
 	}

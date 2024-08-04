@@ -66,9 +66,7 @@
 			},
 			
 			gotoLogin(){
-				uni.navigateTo({
-					url:'/subpkg/login/wxLogin'
-				})
+				uni.$router.gotoWxLogin()
 			}
 		}
 	}

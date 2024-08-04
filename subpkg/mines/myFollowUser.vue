@@ -1,6 +1,7 @@
 <template>
-	<view class="list">
-		<view class="list-item" v-for="(item,index) in dataList" :key="index" @click="gotoUserHomePage(item.to_user_id)">
+	<scroll-view class="list-scroll" :scroll-y="true" @scrolltolower="scrolltolower" :lower-threshold="30" :scroll-anchoring="true"
+					refresher-enabled="true" :refresher-triggered="triggered" :refresher-threshold="100" @refresherrefresh="onRefresh">
+		<view class="list-item" v-for="(item,index) in followList" :key="index" @click="gotoUserHomePage(item.to_user_id)">
 			<view class="left">
 				<image class="list-avatar" :src="item.avatar" mode=""></image>
 				<view class="name-container">
@@ -17,57 +18,72 @@
 				<image class="follow-icon" src="/static/icons/icon_detail_guanzhu_yes.png" mode=""></image>
 			</view>
 		</view>
-	</view>
+		<view class="nomore-container" v-if="!hasNomore">
+			<view class="text">已全部加载完毕</view>
+		</view>
+	</scroll-view>
 </template>
 
 <script>
+	import { $pageLoadMore } from '../../static/mixin/page-load-more';
 	export default {
+		mixins:[$pageLoadMore],
 		data() {
 			return {
-				dataList:[]
+				followList:[],
+				time:'',
+				hasNomore:true
 			};
 		},
 		
-		onLoad() {
-			this.getMyFollowUser()
+		onLoad(options) {
+			let that = this
+			uni.$on('updateMinesDataList',function(){
+				//重置数据
+				that.dataList[that.selectedIndex] = that.tabItemData()
+				that.getDataList()
+			})
+		},
+		
+		onUnload() {
+			uni.$off('updateMinesDataList')
 		},
 		
 		methods:{
-			async getMyFollowUser() {
-				if (this.$store.state.s_id === '') {
-					return
-				}
+			async getDataList() {
+				console.log('getDataList===========')
 				let param = uni.$api.apiCommonRequestParam  
 				this.$set(param,'s_id',this.$store.state.s_id)
+				this.$set(param,'time',this.time)
 				const {data : res} = await uni.$http.post(uni.$api.apiMyFollowUser, param)
-				// if (res.code !== '200') return uni.$showMsg()
-				// if(res.result.status === 1){
-				// 	//请求成功
-				// 	this.dataList = [...this.followList,...res.result.data.data] 
-				// }
-				this.dataList = res.data
+				this.stopLoading(res)
+				this.followList = this.dataList[0].list
+				this.time = this.dataList[0].time
+				this.hasNomore = this.dataList[0].hasNomore
 			},
 			
 			gotoUserHomePage(user_id){
-				uni.navigateTo({
-					url:'/subpkg/userHomePage/userHomePage?user_id='+user_id
-				})
+				uni.$router.gotoUserHomePage(user_id)
 			}
 		}
 	}
 </script>
 	
 <style lang="scss">
-	.list{
-		padding: 0px $margin-left-right;
+	.list-scroll{
 		background-color: white;
+		height: 100%;
+		width: 100%;
 	}
 	.list-item{
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 16rpx 10rpx;
+		padding: 16rpx $margin-left-right;
 		border-bottom: 1rpx solid #efefef;
+	}
+	.list-name{
+		max-width: 600rpx;
 	}
 	.left,
 	.right{

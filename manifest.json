@@ -16,15 +16,12 @@
             "autoclose" : true,
             "delay" : 0
         },
-		"app-plus" : {
-		        "background": "#CCCCCC", //背景色
-		        "safearea" : {
-		            //安全区域配置，仅iOS平台生效  
-		            "bottom" : {
-		                // 底部安全区域配置  
-		                "offset" : "none" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，默认值为"none"  
-		            }
-		        }
+		"safearea" : {
+		    //安全区域配置，仅iOS平台生效
+		    "bottom" : {
+		        // 底部安全区域配置
+		        "offset" : "none" // 底部安全区域偏移，"none"表示不空出安全区域，"auto"自动计算空出安全区域，
+		    }
 		},
         "modules" : {
             "OAuth" : {}

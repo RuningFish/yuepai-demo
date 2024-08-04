@@ -14,38 +14,40 @@
 						<!-- 列表数据 -->
 						<view class="production-list">
 							<view class="production-list-column" v-for="(item0,index0) in column_count" :key="index0">
-								<view class="list-column-item"
-									v-for="(item,index) in recommendList[selectedIndex][index0]" :key="index"
-									@click="itemClick(item)">
-									<!-- 视频图片有先显示视频图片 -->
-									<block v-if="item.video_cover !== null && item.video_cover.length > 0">
-										<view class="video-icon">
-											<uni-icons type="videocam" size="25" color="#fff"></uni-icons>
-										</view>
-										<image class="image-cover" :src="item.video_cover" mode="widthFix"></image>
-									</block>
-									<block v-for="(item2,index2) in item.imgUrl" :key="index2" v-else>
-										<image class="image-cover" :src="item2.bigurl" mode="widthFix"
-											v-show="index2 === 0"></image>
-									</block>
-									<rich-text class="content">{{item.content}}</rich-text>
-									<view class="production-item-info">
-										<view class="production-item-info-left">
-											<view class="avatar">
-												<image :src="item.avatar"></image>
+								<template v-if="recommendList[selectedIndex]">
+									<view class="list-column-item"
+										v-for="(item,index) in recommendList[selectedIndex][index0]" :key="index"
+										@click="itemClick(item)">
+										<!-- 视频图片有先显示视频图片 -->
+										<block v-if="item.video_cover !== null && item.video_cover.length > 0">
+											<view class="video-icon">
+												<uni-icons type="videocam" size="25" color="#fff"></uni-icons>
 											</view>
-											<view class="info-content">
-												<view class="top">
-													<view class="nickname">{{item.nickname}}</view>
+											<image class="image-cover" :src="item.video_cover" mode="widthFix"></image>
+										</block>
+										<block v-for="(item2,index2) in item.imgUrl" :key="index2" v-else>
+											<image class="image-cover" :src="item2.bigurl" mode="widthFix"
+												v-show="index2 === 0"></image>
+										</block>
+										<rich-text class="content">{{item.content}}</rich-text>
+										<view class="production-item-info">
+											<view class="production-item-info-left">
+												<view class="avatar">
+													<image :src="item.avatar"></image>
 												</view>
-												<view class="bottom">
-													<view>{{item.identity}} | {{item.city_name}}</view>
+												<view class="info-content">
+													<view class="top">
+														<view class="nickname">{{item.nickname}}</view>
+													</view>
+													<view class="bottom">
+														<view>{{item.identity}} | {{item.city_name}}</view>
+													</view>
 												</view>
 											</view>
+											<view class="production-item-info-right">{{item.uonlinetime}}</view>
 										</view>
-										<view class="production-item-info-right">{{item.uonlinetime}}</view>
 									</view>
-								</view>
+								</template>
 							</view>
 						</view>
 					</scroll-view>
@@ -58,58 +60,43 @@
 
 <script>
 	import myTabbar from '@/components/myTabbar/myTabbar';
+	import { $pageLoadMore } from '../../static/mixin/page-load-more';
 	export default {
+		mixins:[$pageLoadMore],
 		comments: {
 			myTabbar
 		},
 		data() {
 			return {
 				tabList: ['推荐', '同城', '模特', '摄影师', '化妆师', '修图师', '造型师'],
-				selectedIndex: 0,
 				// 存放数据的数组
 				recommendList: [
 					[]
 				],
-				isloading: false,
-				//加载更多使用，为上一条数据的time
 				lastTime: [],
-				triggered: true,
-				pull: false,
-				//列数
 				column_count: 2,
 			};
 		},
 
 		onLoad() {
-			const info = uni.getSystemInfoSync()
-			// let that = this
-			// let query = uni.createSelectorQuery().in(this);
-			// let top = 0;
-			// query.select('.swiper-item-scroll').boundingClientRect(data => {
-			// 	top = data.top
-			// 	console.log('元素距离顶部的距离:' + top)
-			// 	console.log('production - onLoad : ',top ,'\n' , info.screenTop,that.windowHeight,info.windowHeight,info) 
-			// }).exec();
 
-			//获取列表数据
-			this.apiGetList(this.selectedIndex)
 		},
 
 		methods: {
 			//请求对应分类的数据
-			async apiGetList(index) {
+			async getDataList() {
+				let index = this.selectedIndex
 				let param = this.getRequestParam(index)
 				this.isloading = true
 				const {
 					data: res
-				} = await uni.$http.post('/appapi/zuopin/apiGetList', param)
+				} = await uni.$http.post(uni.$api.apiGetZuoPinList, param)
 				if (res.code !== '200') return uni.$showMsg()
-				this.stopLoading()
-				// this.recommendList[index] = [...this.recommendList[index], ...res.result.data.data]
+				this.stopLoading(res)
 				const grouplist = this.dynamicGroupList(this.recommendList[index], res.result.data.data, this
 					.column_count)
 				this.recommendList[index] = grouplist
-				this.lastTime[index] = res.result.data.nexttime
+				this.lastTime[index] = this.dataList[index].time
 				console.log(this.tabList[index], "-----111", this.recommendList[index]);
 			},
 
@@ -124,7 +111,7 @@
 					param = {
 						has_video: 1,
 						time: this.lastTime[index] || '',
-						s_city: this.$store.state.current_city_code //'140200'
+						s_city: this.$store.state.current_city_code 
 					}
 				} else if (index >= 1) {
 					param = {
@@ -164,65 +151,18 @@
 
 			//跳转到详情页面
 			itemClick(item) {
-				console.log('作品跳转到详情页面---', item.item_id);
-				uni.navigateTo({
-					url: '/subpkg/detail/detail?item_id=' + item.item_id + '&type=production'
-				})
+				uni.$router.gotoDetail(item.item_id + '&type=production')
 			},
 
 			tabChange(e) {
 				let index = e.target.current || e.detail.current
-				console.log('tabChange---');
 				if (this.selectedIndex === index) return
 				this.$refs.myTabs.itemIndexChange(index)
 			},
 
 			//选项卡点击
 			tabIndexChange(index) {
-				this.triggered = false
-				this.selectedIndex = index
-				let dataList = this.recommendList[index]
-
-				if (dataList === undefined || dataList === null) {
-					dataList = []
-					this.recommendList[index] = dataList
-				}
-
-				if (dataList !== undefined && dataList !== null && dataList.length === 0) {
-					//数据为空时请求数据
-					this.apiGetList(index)
-				}
-			},
-
-			onRefresh() {
-				this.pull = true
-				this.triggered = true
-				this.lastTime[this.selectedIndex] = ''
-				console.log('onRefresh+++', 'data');
-				if (this.isloading) return
-				console.log('onRefresh---', 'data');
-				this.scrolltolower()
-			},
-
-			onPulling() {
-
-			},
-
-			//上拉加载
-			scrolltolower() {
-				console.log('loadMore-----', 'data');
-				if (this.isloading) return
-				this.apiGetList(this.selectedIndex)
-			},
-
-			stopLoading() {
-				if (this.pull) {
-					console.log('stopLoading---', this.pull);
-					this.recommendList[this.selectedIndex] = []
-				}
-				this.triggered = false
-				this.isloading = false
-				this.pull = false
+				this.tabItemClick(index)
 			}
 		}
 	}
@@ -239,11 +179,6 @@
 	}
 	page {
 		height: 100%;
-	}
-
-	.list-scroll {
-		margin-left: $margin-left-right;
-		margin-right: $margin-left-right;
 	}
 
 	.content {
@@ -279,7 +214,7 @@
 				color: lightgrey;
 
 				.nickname {
-					width: 130rpx;
+					width: 110rpx;
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -314,6 +249,8 @@
 		padding-bottom: 10px;
 		columns: 2;
 		column-gap: $list-row-col-spacing;
+		margin-left: $margin-left-right;
+		margin-right: $margin-left-right;
 
 		.production-list-column {
 			// width: 350rpx;
@@ -340,10 +277,5 @@
 				z-index: 999;
 			}
 		}
-	}
-
-	.production-item-info {
-		// background-color: aqua;
-		// margin-bottom: 10px;
 	}
 </style>
