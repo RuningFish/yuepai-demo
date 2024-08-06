@@ -3,7 +3,7 @@
 		<view class="detail-container" v-if="item.avatar">
 			<view class="info">
 				<view class="list-info-container">
-					<image class="list-avatar" :src="item.avatar"></image>
+					<image @click.stop="gotoUserHomePage" class="list-avatar" :src="item.avatar"></image>
 					<view  class="list-info-right-container">
 						<view class="list-name-sex-container">
 							<view  class="list-name">{{item.nickname}}</view>
@@ -121,7 +121,7 @@
 				</view>
 				<!-- 推荐列表 -->
 				<view class="recommend-item" v-for="(item5,index5) in item.recommend_list" :key="index5">
-					<listCardItem :item="item5" @itemClick="itemClick" @previewImage="previewImage(index5,item5.imgUrl)">
+					<listCardItem :item="item5" @itemClick="itemClick" @gotoUserHomePage="gotoUserHomePage" @previewImage="previewImage(index5,item5.imgUrl)">
 					</listCardItem>
 				</view>
 			</view>
@@ -249,9 +249,7 @@
 
 			//跳转到详情页面
 			itemClick(item) {
-				uni.navigateTo({
-					url: '/subpkg/detail/detail?item_id=' + item.item_id
-				})
+				uni.$router.gotoDetail(item.item_id)
 			},
 			//查看图片
 			previewImage(index, images) {
@@ -261,10 +259,8 @@
 				})
 			},
 			//跳转个人主页
-			gotoHomePage() {
-				uni.navigateTo({
-					url: '/subpkg/userHomePage/userHomePage?user_id=' + this.item.user_id
-				})
+			gotoUserHomePage() {
+				uni.$router.gotoUserHomePage(this.item.user_id)
 			},
 
 			//关注用户
@@ -284,9 +280,7 @@
 			async likeIconClick(){
 				if (this.$store.state.s_id === '') {
 					//跳转登录页面
-					uni.navigateTo({
-						url: '/subpkg/login/wxLogin'
-					})
+					uni.$router.gotoWxLogin()
 					return
 				}
 				
@@ -326,9 +320,7 @@
 			async collectIconClick() {
 				if (this.$store.state.s_id === '') {
 					//跳转登录页面
-					uni.navigateTo({
-						url: '/subpkg/login/wxLogin'
-					})
+					uni.$router.gotoWxLogin()
 					return
 				}
 				

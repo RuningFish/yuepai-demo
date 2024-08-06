@@ -26,7 +26,7 @@
 					<!-- 推荐列表 -->
 					<view class="home-recommend-list">
 						<view class="home-recommend-item" v-for="(item,index) in recommendList[index]" :key="index">
-							<listCardItem :item="item" @itemClick="itemClick" @previewImage="previewImage"></listCardItem>
+							<listCardItem :item="item" @itemClick="itemClick" @gotoUserHomePage="gotoUserHomePage" @previewImage="previewImage"></listCardItem>
 						</view>
 						<!-- <view class="" v-for="(item2,index2) in 100" :key="index2" style="height: 60px;line-height: 60px;border: 1px solid forestgreen;" @click="testClick(index2)">
 							{{index2}}
@@ -83,10 +83,6 @@ import { $api } from '../../request/api';
 			//获取推荐列表
 			this.getRecommendList(this.selectedIndex)
 			
-			const info = uni.getSystemInfoSync()
-			// this.windowHeight = info.screenHeight-info.statusBarHeight-info.safeAreaInsets.top-40-(info.safeAreaInsets.bottom > 0? 65:50)
-			// console.log('--------909090',info.windowHeight)
-			// this.windowHeight = info.windowHeight-35
 		},
 				
 		methods:{
@@ -144,6 +140,10 @@ import { $api } from '../../request/api';
 					current:index,
 					urls:images.map(img => img.bigurl)
 				})
+			},
+			//跳转个人主页
+			gotoUserHomePage(user_id){
+				uni.$router.gotoUserHomePage(user_id)
 			},
 			//banner 跳转
 			bannerClick(item){
@@ -204,12 +204,7 @@ import { $api } from '../../request/api';
 			},
 			
 			onPulling (){
-				// console.log('onPulling---','data');
-				// this.recommendList[this.selectedIndex] = []
-				// this.lastTime[this.selectedIndex] = ''
-				// uni.hideLoading()
-			 //    if (this.isloading) return
-				// this.scrolltolower()
+				
 			},
 			
 			//上拉加载

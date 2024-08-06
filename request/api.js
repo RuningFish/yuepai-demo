@@ -10,51 +10,67 @@ const api = {
 	},
 
 	//首页获取banner列表
-	apiGetBannerList:'/appapi/Banner/apiGetList',
+	apiGetBannerList:'/Banner/apiGetList',
 	//首页获取小程序列表
-	apiGetMiniAppSetInfor:'/appapi/setInfor/getMiniAppSetInfor',
+	apiGetMiniAppSetInfor:'/setInfor/getMiniAppSetInfor',
 	//首页获取推荐列表
-	apiGetRecommendList:'/appapi/Yuepai/apiGetRecommendList',
+	apiGetRecommendList:'/Yuepai/apiGetRecommendList',
 	//首页最新&同城列表
-	apiGetYuepaiList:'/appapi/Yuepai/apiGetList',
+	apiGetYuepaiList:'/Yuepai/apiGetList',
 	//手机账号登录
-	loginphone: '/appapi/user/loginphone',
+	loginphone: '/user/loginphone',
 	//作品分类列表
-	apiGetZuoPinList:'/appapi/zuopin/apiGetList',
+	apiGetZuoPinList:'/zuopin/apiGetList',
 	//请求个人信息
-	apiUserIndex: '/appapi/user/apiUserIndex',
+	apiUserIndex: '/user/apiUserIndex',
 	//约拍详情
-	apiGetDetail: '/appapi/yuepai/apiGetDetail',
+	apiGetDetail: '/yuepai/apiGetDetail',
 	//约拍头像列表
-	apiGetRegAvatarList:'/appapi/yuepai/getRegAvatarList',
+	apiGetRegAvatarList:'/yuepai/getRegAvatarList',
 	//作品详情
-	apiGetItem:'/appapi/zuopin/apiGetItem',
+	apiGetItem:'/zuopin/apiGetItem',
 	//关注
-	apiFollowUser: '/appapi/follow/apiFollowUser',
+	apiFollowUser: '/follow/apiFollowUser',
 	//取消关注
-	apiUnFollowUser: '/appapi/follow/apiUnFollowUser',
+	apiUnFollowUser: '/follow/apiUnFollowUser',
 	//点赞
-	apiLike: '/appapi/like/apiLike',
+	apiLike: '/like/apiLike',
 	//取消点赞
-	apiUnLike: '/appapi/like/apiUnLike',
+	apiUnLike: '/like/apiUnLike',
 	/**收藏**/
-	apiCollect: '/appapi/collect/apiCollect',
+	apiCollect: '/collect/apiCollect',
 	//取消收藏
-	apiUnCollect: '/appapi/collect/apiUnCollect',
+	apiUnCollect: '/collect/apiUnCollect',
 	//个人主页-个人展示信息
-	apiUsershow:'/appapi/user/apiUsershow',
+	apiUsershow:'/user/apiUsershow',
 	//个人主页-约拍数据
-	apiUserYuepai:'/appapi/yuepai/apiUserYuepai',
+	apiUserYuepai:'/yuepai/apiUserYuepai',
 	//个人主页-作品数据
-	apiUserZuopin:'/appapi/zuopin/apiUserZuopin',
+	apiUserZuopin:'/zuopin/apiUserZuopin',
 	//我的关注
-	apiMyFollowUser:'/appapi/follow/apiMyFollowUser',
+	apiMyFollowUser:'/follow/apiMyFollowUser',
 	//我的收藏type：1约拍 2作品
-	apiMyCollect:'/appapi/collect/apiMyCollect',
+	apiMyCollect:'/collect/apiMyCollect',
 	//我的点赞type:同上
-	apiMyLike:'/appapi/like/apiMyLike',
+	apiMyLike:'/like/apiMyLike',
 	//浏览历史type:同上
-	apiMyViewed:'/appapi/viewhistory/apiMyViewed'
+	apiMyViewed:'/viewhistory/apiMyViewed',
+	//签到
+	apiGetSign:'/sign/apiSign',
+	//检查版本更新
+	apiSetinforVersion:'/Setinfor/setIndex',
+	//编辑用户信息
+	apiEditUserInfor:'/user/editUserInfor',
+	//职业列表
+	apiGetIdentity:'/identity/apiGetIdentity',
+	//保存编辑信息
+	apiSaveEditUserInfor:'/user/apiEditUserInfor',
+	//保存简介
+	apiSaveUserIntro:'/user/apiSaveUserIntro',
+	//发布---约拍对象列表
+	apiGetPubInfo:'/yuepai/getPubInfo',
+	//主题标签
+	apiAddIndex:'/yuepai/apiAddIndex'
 }
 
 export const $api = api

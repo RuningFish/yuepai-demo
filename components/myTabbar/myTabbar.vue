@@ -91,7 +91,7 @@
 		bottom: 0;
 		width: 100%;
 		// height: 60px;//var(--tabbar_height);
-		z-index: 999;
+		z-index: 10000;
 		background-color: #fff;
 		display: flex;
 		height: calc(110rpx + constant(safe-area-inset-bottom)*0.4);// 兼容 IOS<11.2 

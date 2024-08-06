@@ -91,15 +91,10 @@
 				let url = type === 1 ? 'https://m.mdyuepai.com/m/about/agreement' :
 					'https://m.mdyuepai.com/m/about/private'
 				let title = type === 1 ? '用户协议' : '隐私政策'
-				uni.navigateTo({
-					url: '/subpkg/webview/webview?url=' + url + '&title=' + title
-				})
+				uni.$router.gotoWebView(url + '&title=' + title)
 			},
 
 			wxlogin() {
-				// uni.showToast({
-				// 	title: '跳转微信登录'
-				// })
 				
 			},
 

@@ -56,6 +56,7 @@
 		</view>
 	</view>
 	<myTabbar currentPath="/pages/production/production"></myTabbar>
+	<myLoading></myLoading>  
 </template>
 
 <script>

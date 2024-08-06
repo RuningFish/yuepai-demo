@@ -1,5 +1,10 @@
 <template>
 	<myTabbar currentPath="/pages/publish/publish"></myTabbar>
+	<!-- <loading :show="true"></loading> -->
+	<myLoading></myLoading> 
+	<view class="" @click="changeLoadingState" style="z-index: 1000;">
+		changeLoadingState
+	</view>
 </template>
 
 <script>
@@ -26,16 +31,18 @@
 			};
 		},
 		onLoad() {
-			this.getBanner()
-			this.getRecommendList()
+			// this.getBanner()
+			// this.getRecommendList()
 			
-			const info = uni.getSystemInfoSync()
-			this.imageWidth = (info.windowWidth-50)/3
-			console.log('text---',this.imageWidth);
+			// const info = uni.getSystemInfoSync()
+			// this.imageWidth = (info.windowWidth-50)/3
+			// console.log('text---',this.imageWidth);
 		},
 		
 		methods:{
-
+			changeLoadingState(){
+				this.$store.state.isLoading = !this.$store.state.isLoading
+			}
 		},
 	}
 </script>

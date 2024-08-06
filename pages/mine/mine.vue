@@ -1,4 +1,15 @@
 <template>
+	<!-- #ifdef APP-PLUS -->
+	<my-navigationBar @navRightIconClick="navRightIconClick" titleColor="#00c6ca" rightIcon="/static/icons/icon_mine_setting.png">
+		
+	</my-navigationBar>
+	<!-- #endif -->
+	
+	<!-- #ifdef MP-WEIXIN -->
+	<my-navigationBar @navLeftIconClick="navLeftIconClick" titleColor="#00c6ca" leftIcon="/static/icons/icon_mine_setting.png">
+		
+	</my-navigationBar>
+	<!-- #endif -->
 	<scroll-view class="hide-scrollbar" scroll-y="true" show-scrollbar="false">
 		<!-- 未登录 -->
 		<view class="not-login-info" v-if="userInfo.nickname === undefined" @click="gotoLogin">
@@ -16,7 +27,7 @@
 			<view class="info">
 				<view class="info-left">
 					<view class="avatar">
-						<image :src="userInfo.avatar" mode="widthFix"></image>
+						<image @click="avatarClick" :src="userInfo.avatar" mode="widthFix"></image>
 					</view>
 					<view class="info-content">
 						<view class="name-content">
@@ -192,11 +203,11 @@
 			...mapMutations(['saveUserInfo', 'saveLoginId']),
 			itemClick(title) {
 				if (title === '帮助中心') {
-
+					
 				} else if (title === '关于我们') {
 					uni.$router.gotoAbout()
 				} else if (title === '开具发票') {
-
+					
 				}
 				//查看登陆状态
 				else if (this.$store.state.s_id === '') {
@@ -211,6 +222,8 @@
 
 			async getUserInfo() {
 				if (this.$store.state.s_id === '') {
+					this.userInfo = {}
+					this.saveUserInfo({})
 					return
 				}
 				let param = uni.$api.apiCommonRequestParam
@@ -237,14 +250,13 @@
 
 			//我的作品/收藏/点赞/历史点击
 			mineItemsClick(title) {
-				// uni.showToast({
-				// 	title:title,
-				// 	icon:'none'
-				// })
-				// this.myFollowUser()
+				if (this.$store.state.s_id === '') {
+					this.gotoLogin()
+					return
+				}
 				let url = ''
 				if (title === '我的作品') {
-
+					this.$store.state.isLoading = !this.$store.state.isLoading
 				} else if (title === '我的收藏') {
 					uni.$router.gotoMyCollect()
 				} else if (title === '我的点赞') {
@@ -257,6 +269,28 @@
 			//我的关注
 			myFollowUser() {
 				uni.$router.gotoMyFollowUser()
+			},
+			
+			navLeftIconClick(){
+				console.log('navLeftIconClick')
+				if (this.$store.state.s_id === '') {
+					this.gotoLogin()
+					return
+				}
+				uni.$router.gotoSetting()
+			},
+			
+			navRightIconClick(){
+				console.log('navRightIconClick')
+				if (this.$store.state.s_id === '') {
+					this.gotoLogin()
+					return 
+				}
+				uni.$router.gotoSetting()
+			},
+			
+			avatarClick(){
+				uni.$router.gotoEditUserInfo()
 			}
 		}
 	}
@@ -265,8 +299,9 @@
 <style lang="scss">
 	.mine-scroll {
 		width: 100%;
-		height: calc(100vh - 110rpx - constant(safe-area-inset-bottom)*0.4); // 兼容 IOS<11.2
-		height: calc(100vh - 110rpx - env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
+		flex: 1;
+		// height: calc(100vh - 110rpx - constant(safe-area-inset-bottom)*0.4); // 兼容 IOS<11.2
+		// height: calc(100vh - 110rpx - env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
 
 		::-webkit-scrollbar {
 		    display: none;
@@ -495,4 +530,30 @@
 			}
 		}
 	}
+	
+	.navBox{
+		display: flex;
+		align-items: center;
+		background-color: greenyellow;
+	}
+	// .nav-left{
+	// 	margin-top:5px;
+	// 	height: 30px;
+	// 	line-height: 30px;
+	// 	background-color: yellow;
+	// 	width: 60px;
+	// 	margin-left: 10px;
+	// 	// float: left;
+	// 	z-index: 2;
+	// }
+	// .nav-title{
+	// 	margin-top:5px;
+	// 	height: 30px;
+	// 	line-height: 30px;
+	// 	background-color: blue;
+	// 	width: 50%;
+	// 	transform: translateX(-50%);
+	// 	float: right;
+	// 	text-align: center;
+	// }
 </style>

@@ -26,7 +26,7 @@ const router = {
 
 	//手机号码登录
 	gotoPhoneLogin(){
-		let url = '/subpkg/login/wxLogin'
+		let url = '/subpkg/login/phoneNumberLogin'
 		this.navigateTo(url)
 	},
 
@@ -35,12 +35,6 @@ const router = {
 		let url = '/subpkg/about/about'
 		this.navigateTo(url)
 	},
-
-	// //关于页面
-	// gotoAbout(){
-	// 	let url = '/subpkg/about/about'
-	// 	this.navigateTo(url)
-	// },
 	
 	//我的收藏
 	gotoMyCollect(){
@@ -63,6 +57,17 @@ const router = {
 	//浏览历史
 	gotoMyViewed(){
 		let url = '/subpkg/mines/myViewed'
+		this.navigateTo(url)
+	},
+	
+	//设置页面
+	gotoSetting(){
+		let url = '/subpkg/setting/setting'
+		this.navigateTo(url)
+	},
+	
+	gotoEditUserInfo(){
+		let url = '/subpkg/setting/editUserInfo'
 		this.navigateTo(url)
 	},
 	

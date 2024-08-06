@@ -3,7 +3,7 @@
 		<view class="list-card-item-container" @click="gotoDetail(item)">
 			<view class="list-card-item-info">
 				<view class="list-info-container">
-					<image class="list-avatar" :src="item.avatar"></image>
+					<image @click.stop="avatarClick(item)" class="list-avatar" :src="item.avatar"></image>
 					<view class="list-info-right-container">
 						<view class="list-name-sex-container">
 							<view class="list-name">{{item.nickname}}</view>
@@ -76,6 +76,9 @@
 			//查看图片
 			previewImage(index,imgs){
 				this.$emit('previewImage',index,imgs)
+			},
+			avatarClick(item){
+				this.$emit('gotoUserHomePage',item.user_id)
 			}
 		}
 	}

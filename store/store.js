@@ -15,7 +15,9 @@ const store = new Vuex.Store({ //Store一定要是大写 否则会报错 common_
 		
 		s_id:uni.getStorageSync('s_id') || '',
 		user_id:uni.getStorageSync('user_id') || '',
-		user_info:JSON.parse(uni.getStorageSync('user_info') || '{}')
+		user_info:JSON.parse(uni.getStorageSync('user_info') || '{}'),
+		
+		isLoading:false,
 	},
 
 	mutations:{ 
@@ -30,8 +32,8 @@ const store = new Vuex.Store({ //Store一定要是大写 否则会报错 common_
 		
 		//保存手机登录后的id
 		saveLoginId(state,data){
-			state.s_id = data.s_id
-			state.user_id = data.user_id
+			state.s_id = data.s_id ? data.s_id : ''
+			state.user_id = data.user_id ? data.user_id : ''
 			uni.setStorageSync('s_id',state.s_id)
 			uni.setStorageSync('user_id',state.user_id)
 			console.log('saveLoginId---','save-success');
@@ -43,6 +45,25 @@ const store = new Vuex.Store({ //Store一定要是大写 否则会报错 common_
 			uni.setStorageSync('user_info',JSON.stringify(state.user_info))
 			console.log('saveUserInfo---','save-success');
 		},
+		
+		switchLoadingState(state,loading){
+			if(loading){
+				state.isLoading = loading
+			}
+			else{
+				state.isLoading = !state.isLoading
+			}
+		}
+	},
+	
+	getters:{
+		s_id(state){
+			if(state.s_id === undefined){
+				console.log('s_id undefined')
+				state.s_id = ''
+			}
+			return state.s_id
+		}
 	}
 })
 

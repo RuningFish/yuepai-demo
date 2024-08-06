@@ -13,6 +13,7 @@
 		</view>
 	</view>
 	<myTabbar currentPath="/pages/message/message"></myTabbar>
+		<myLoading>1111</myLoading>
 </template>
 
 <script>
