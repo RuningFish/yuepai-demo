@@ -20,7 +20,8 @@
 		{
 			"path": "pages/publish/publish",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "uni-app",
+				"disableScroll": true
 			}
 		},
 		{ 
@@ -146,6 +147,13 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "编辑资料"
+			}
+		},
+		{
+			"path" : "subpkg/publish_changdi/publish_changdi",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
 			}
 		}
 	], 

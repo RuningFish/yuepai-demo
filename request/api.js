@@ -67,10 +67,14 @@ const api = {
 	apiSaveEditUserInfor:'/user/apiEditUserInfor',
 	//保存简介
 	apiSaveUserIntro:'/user/apiSaveUserIntro',
+	//获取图片上传token
+	apiGet_qiniu_access_token:'/qiniu/get_access_token',
+	//上传图片/视频地址
+	apiQiniu_upload_url: 'https://upload.qiniup.com/',
 	//发布---约拍对象列表
 	apiGetPubInfo:'/yuepai/getPubInfo',
 	//主题标签
-	apiAddIndex:'/yuepai/apiAddIndex'
+	apiAddIndex:'/yuepai/apiAddIndex',
 }
 
 export const $api = api

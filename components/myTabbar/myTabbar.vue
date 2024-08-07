@@ -7,6 +7,46 @@
 			</view>
 		</view>
 	</view>
+
+	<!-- 	<uni-popup ref="popup" backgroundColor="#fff354" v-if="showPopup">
+	 				<uni-popup-share></uni-popup-share>
+					<view class="">
+						aaaaa
+					</view>
+	</uni-popup> -->
+
+
+	<!-- <uni-popup ref="popup" type="bottom" background-color="#fff" :show="true"
+		@close="closePopup">
+		<view style="height: 100%; border-bottom: 1rpx solid #E5E5E5;padding:24rpx 0 32rpx; text-align: center;">提示</view>
+		<view class="flex-colomn">
+			<view class="tet">正确答案为：{{answer}}</view>
+			<uni-icons class="close-btn" type="closeempty" size="20" @click="closePopup"></uni-icons>
+		</view>
+	</uni-popup> -->
+<!-- </template>
+<script>
+	export default {
+		data() {
+			return {
+				answer: 'A',
+
+			}
+		},
+		methods: {
+			open() {
+				// 通过组件定义的ref调用uni-popup方法 ,如果传入参数 ，type 属性将失效 ，仅支持 ['top','left','bottom','right','center']
+
+				this.$refs.popup.open('bottom')
+			},
+
+			closePopup() {
+				this.$refs.popup.close()
+			},
+		}
+	}
+</script> -->
+
 </template>
 
 <script>
@@ -20,11 +60,13 @@
 		},
 
 		computed: {
-			
+
 		},
 
 		created() {
-			uni.hideTabBar({animation:false})
+			uni.hideTabBar({
+				animation: false
+			})
 			// let info = uni.getSystemInfoSync()
 			// var height = info.safeAreaInsets.bottom > 0 ? 65 : 50;
 			// this.tabbar_height += String(height) + 'px'
@@ -33,6 +75,7 @@
 
 		data() {
 			return {
+				showPopup: false,
 				tabbar_height: '--tabbar_height:',
 				tabbarList: [{
 						"pagePath": "/pages/home/home",
@@ -75,9 +118,20 @@
 		methods: {
 			switchTab(url) {
 				if (this.currentPath !== url) {
-					uni.switchTab({
-						url: url
-					})
+					if (url === this.tabbarList[2].pagePath) {
+						if(this.$store.state.s_id === ''){
+							uni.$router.gotoWxLogin()
+						}
+						else{
+							uni.switchTab({
+								url: url
+							})
+						}
+					} else {
+						uni.switchTab({
+							url: url
+						})
+					}
 				}
 			}
 		}
@@ -94,8 +148,9 @@
 		z-index: 10000;
 		background-color: #fff;
 		display: flex;
-		height: calc(110rpx + constant(safe-area-inset-bottom)*0.4);// 兼容 IOS<11.2 
-		height: calc(110rpx + env(safe-area-inset-bottom)*0.4);// 兼容 IOS>11.2
+		height: calc(110rpx + constant(safe-area-inset-bottom)*0.4); // 兼容 IOS<11.2 
+		height: calc(110rpx + env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
+
 		.image {
 			width: 44rpx;
 			height: 44rpx;
@@ -108,7 +163,7 @@
 			color: #333;
 			margin-top: 5rpx;
 		}
-		
+
 		.active-text {
 			color: $main-theme-color;
 		}

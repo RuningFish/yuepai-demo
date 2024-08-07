@@ -3,7 +3,7 @@
 		<view class="list-item avatar">
 			<view class="name">头像</view>
 			<view class="item-right">
-				<image :src="avatar" mode=""></image>
+				<image @click="avatarClick" :src="select_avatar_path !== '' ? select_avatar_path : avatar" mode=""></image>
 				<uni-icons type="right" size="18" color="lightgray"></uni-icons>
 			</view>
 		</view>
@@ -59,7 +59,7 @@
 		</view>
 		
 		<view class="bottom">
-			<view class="save-button" @click="saveInfo">
+			<view class="save-button" @click="saveButtonClick">
 				保存
 			</view>
 		</view>
@@ -71,6 +71,7 @@
 		data() {
 			return {
 				user_info:{},
+				select_avatar_path:'',
 				avatar:'',
 				sex_list:['男','女'],
 				identity_list:[],
@@ -117,6 +118,29 @@
 				} 
 			},
 			
+			//选择图片
+			avatarClick(){
+				let width = uni.getSystemInfoSync().screenWidth
+				let that = this
+				uni.chooseImage({
+					count:1,
+					crop:{
+						width:width,
+						height:width
+					},
+					success(filePath) {
+						console.log('选择图片---',filePath)
+						that.select_avatar_path = filePath.tempFilePaths[0]
+					},
+					fail(error) {
+						console.log('选择图片---error',error)
+					},
+					complete() {
+						
+					}
+				})
+			},
+			
 			nickNameChange(e){
 				this.nickname = e.target.value
 			},
@@ -149,6 +173,52 @@
 				return `${year}-${month}-${date}`
 			},
 			
+			saveButtonClick(){
+				//需要上传图片
+				if(this.select_avatar_path.length !== 0){
+					this.getAccessToken()
+				}
+				else{
+					this.saveInfo()
+				}
+			},
+			
+			//获取上传图片的token
+			async getAccessToken(){
+				console.log('getAccessToken---begin')
+				let param = Object.assign({},uni.$api.apiCommonRequestParam)
+				this.$set(param,'s_id',this.$store.state.s_id)
+				const { data :res } = await uni.$http.post(uni.$api.apiGet_qiniu_access_token,param)
+				if (res.code !== '200') return uni.$showMsg()
+				let access_token = res.result.data.uptoken
+				console.log('getAccessToken---end:',access_token)
+				this.upLoadImage(access_token)
+			},
+			
+			//上传图片
+			async upLoadImage(token){
+				console.log('upLoadImage---begin')
+				let that = this
+				uni.uploadFile({
+					url:'https://upload.qiniup.com/',
+					filePath:that.select_avatar_path,
+					name:'file',
+					formData:{
+						token:token
+					},
+					success:({data:res}) =>{
+						//res返回的是字符串格式
+						that.avatar = JSON.parse(res).key
+						console.log('上传图片成功了',res,' | ',that.avatar)
+						that.saveInfo()
+					},
+					fail:(error) => {
+						console.log('上传图片失败了',error)
+					}
+				})
+				console.log('upLoadImage---end:')
+			},
+			
 			//保存信息
 			async saveInfo(){
 				let promiseList = []
@@ -156,8 +226,8 @@
 				let editInfo = false
 				let editIntro = false
 				if(
-				// this.avatar !== this.user_info.avatar  // qiniu key获取不到 无法更改
-				  this.nickname !== this.user_info.nickname 
+				  this.avatar !== this.user_info.avatar
+				| this.nickname !== this.user_info.nickname 
 				| this.select_sex_index !== this.user_info.sex
 				| this.select_birthday !== this.user_info.birthday
 				| this.select_identity !== this.user_info.identity

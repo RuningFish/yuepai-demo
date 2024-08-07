@@ -203,7 +203,10 @@
 			...mapMutations(['saveUserInfo', 'saveLoginId']),
 			itemClick(title) {
 				if (title === '帮助中心') {
-					
+					this.saveLoginId({
+			"s_id": "c161e78d4e6b2dc4ee664bee02ab5bb1",
+			"user_id": "1e79b70be98a7525323a9265ff092ef8"
+		})
 				} else if (title === '关于我们') {
 					uni.$router.gotoAbout()
 				} else if (title === '开具发票') {

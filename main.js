@@ -18,25 +18,22 @@ uni.$router = $router
 $http.baseUrl = 'https://api.mdyuepai.com/appapi'
 
 $http.beforeRequest = function(options){
-	console.log('beforeRequest === options',options)
 	uni.showLoading({
 		title:'加载中...'
 	})
-	// uni.$emit('showloading',true)
 }
 
 $http.requestSuccess = function(res){
-	// if(res.data.result.status !== undefined && res.data.result.status === -999){
-	// 	//登录状态已丢失
-	// 	uni.setStorageSync('s_id','')
-	// 	uni.setStorageSync('user_id','')
-	// 	uni.$showMsg(res.data.result.message)
-	// }
+	if(res.data.result.status !== undefined && res.data.result.status === -999){
+		//登录状态已丢失
+		uni.setStorageSync('s_id','')
+		uni.setStorageSync('user_id','')
+		uni.$showMsg(res.data.result.message)
+	}
 }
 
 $http.afterRequest = function(options){
 	uni.hideLoading()
-	// uni.$loading.hideLoading()
 }
 
 //封装弹框方法
