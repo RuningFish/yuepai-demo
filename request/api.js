@@ -73,8 +73,16 @@ const api = {
 	apiQiniu_upload_url: 'https://upload.qiniup.com/',
 	//发布---约拍对象列表
 	apiGetPubInfo:'/yuepai/getPubInfo',
-	//主题标签
-	apiAddIndex:'/yuepai/apiAddIndex',
+	//主题标签-约拍
+	apiYuepaiAddIndex:'/yuepai/apiAddIndex',
+	//主题标签-作品
+	apiZuoPinAddIndex:'/zuopin/apiAddIndex',
+	//发布约拍
+	apiAddYuepai:'/yuepai/apiAddYuepai',
+	//发布作品
+	apiAddZuoPin:'/zuopin/apiAddZuopin',
+	//我的约拍status:all 全部 opening展示中 closed 已关闭 audit_fail 审核失败
+	apiMyYuepai:'/yuepai/apiMyYuepai'
 }
 
 export const $api = api

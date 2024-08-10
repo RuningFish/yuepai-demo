@@ -4,6 +4,7 @@ import { $http } from '@/request/http.js'
 import { $appConfig } from './config/appConfig'
 import { $api } from './request/api' 
 import { $router } from './utils/nav-router'
+import { $utils } from './utils/utils'
 import myLoading  from './components/loading/loading.vue'
 import store from './store/store'
 import myNavigationBar from './components/my-navigationBar/my-navigationBar.vue'
@@ -13,6 +14,7 @@ uni.$http = $http
 uni.$appConfig = $appConfig
 uni.$api  = $api
 uni.$router = $router
+uni.$utils = $utils
 
 //请求的baseUrl
 $http.baseUrl = 'https://api.mdyuepai.com/appapi'
@@ -24,12 +26,12 @@ $http.beforeRequest = function(options){
 }
 
 $http.requestSuccess = function(res){
-	if(res.data.result.status !== undefined && res.data.result.status === -999){
-		//登录状态已丢失
-		uni.setStorageSync('s_id','')
-		uni.setStorageSync('user_id','')
-		uni.$showMsg(res.data.result.message)
-	}
+	// if(res.data.result.status !== undefined && res.data.result.status === -999){
+	// 	//登录状态已丢失
+	// 	uni.setStorageSync('s_id','')
+	// 	uni.setStorageSync('user_id','')
+	// 	uni.$showMsg(res.data.result.message)
+	// }
 }
 
 $http.afterRequest = function(options){

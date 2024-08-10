@@ -150,10 +150,32 @@
 			}
 		},
 		{
-			"path" : "subpkg/publish_changdi/publish_changdi",
+			"path" : "subpkg/publishes/publish_changdi",
 			"style" : 
 			{
 				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "subpkg/publishes/publish_pubInfo",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "subpkg/publishes/publish_content",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+				// "disableScroll": true
+			}
+		},
+		{
+			"path" : "subpkg/publishes/publish_content_zuopin",
+			"style" : 
+			{
+				"navigationBarTitleText" : "发布作品"
 			}
 		}
 	], 

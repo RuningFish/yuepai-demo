@@ -46,13 +46,11 @@
 			},
 			
 			itemClick(item){
-				var url = '/subpkg/detail/detail?item_id=' + item.item_id
+				let item_id = item.item_id
 				if (this.selectedIndex === 1) {
-					url += '&type=production'
+					item_id += '&type=production'
 				}
-				uni.navigateTo({
-					url: url
-				})
+				uni.$router.gotoDetail(item_id)
 			},
 			
 			//查看图片

@@ -66,8 +66,33 @@ const router = {
 		this.navigateTo(url)
 	},
 	
+	//编辑信息
 	gotoEditUserInfo(){
 		let url = '/subpkg/setting/editUserInfo'
+		this.navigateTo(url)
+	},
+	
+	//发布约拍对象列表
+	gotoPublishPubInfo(){
+		let url = '/subpkg/publishes/publish_pubInfo'
+		this.navigateTo(url)
+	},
+	
+	//发布页面【约拍】
+	gotoPublishContent(param = ''){
+		let url = '/subpkg/publishes/publish_content'+param
+		this.navigateTo(url)
+	},
+	
+	//发布场地
+	gotoPublishChangdi(param){
+		let url = '/subpkg/publishes/publish_changdi'+param
+		this.navigateTo(url)
+	},
+	
+	//发布页面【作品】
+	gotoPublishContentZuopin(param = ''){
+		let url = '/subpkg/publishes/publish_content_zuopin'+param
 		this.navigateTo(url)
 	},
 	

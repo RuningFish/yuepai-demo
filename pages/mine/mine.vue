@@ -210,7 +210,7 @@
 				} else if (title === '关于我们') {
 					uni.$router.gotoAbout()
 				} else if (title === '开具发票') {
-					
+			
 				}
 				//查看登陆状态
 				else if (this.$store.state.s_id === '') {

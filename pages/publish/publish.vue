@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="title">您可以发布</view>
 		<view class="item-list">
-			<view class="item" v-for="(item,index) in dataList" :key="index">
+			<view class="item" v-for="(item,index) in dataList" :key="index" @click="itemClick(index)">
 				<view class="item-left">
 					<image class="item-icon" :src="item.icon" mode="aspectFit"></image>
 				</view>
@@ -49,17 +49,23 @@
 			};
 		},
 		onLoad() {
-			// this.getBanner()
-			// this.getRecommendList()
 			
-			// const info = uni.getSystemInfoSync()
-			// this.imageWidth = (info.windowWidth-50)/3
-			// console.log('text---',this.imageWidth);
 		},
 		
 		methods:{
-			changeLoadingState(){
-				this.$store.state.isLoading = !this.$store.state.isLoading
+			itemClick(index){
+				if(index === 0){
+					//约拍
+					uni.$router.gotoPublishPubInfo()
+				}
+				else if(index === 1){
+					//作品
+					uni.$router.gotoPublishContentZuopin()
+				}
+				else if(index === 2 | index === 3){
+					let type = `?type=${index}`
+					uni.$router.gotoPublishChangdi(type)
+				}
 			}
 		},
 	}
