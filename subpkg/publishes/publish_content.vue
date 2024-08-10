@@ -156,7 +156,7 @@
 				//选择的图片数组
 				selected_Images: [],
 				//费用模式
-				money_mode: [],
+				money_mode: [], 
 				selected_money_mode: '',
 				//面向地区
 				selected_location: '北京',
@@ -199,7 +199,7 @@
 					data: res
 				} = await uni.$http.post(uni.$api.apiYuepaiAddIndex, param)
 				if (res.code !== '200') return uni.$showMsg()
-				if (res.status === 1) {
+				if (res.result.status === 1) {
 					//可以发布		
 					this.addIndex = res.result.data
 					this.money_mode = this.addIndex.mode.map(obj => obj.name)

@@ -21,6 +21,9 @@
 		<view class="nomore-container" v-if="!hasNomore">
 			<view class="text">已全部加载完毕</view>
 		</view>
+		<view v-if="dataList[index] && dataList[index].no_data">
+			<no-data no_data_text="当前暂无关注～"></no-data> 
+		</view>
 	</scroll-view>
 </template>
 

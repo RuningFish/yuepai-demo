@@ -16,6 +16,9 @@
 								@previewImage="previewImage"></homePageCardItem>
 						</view>
 					</view>
+					<view class="" v-if="dataList[index] && dataList[index].no_data">
+						<no-data no_data_text="当前暂无约拍～"></no-data> 
+					</view>
 					<view class="nomore-container" v-if="dataList[index] && dataList[index].list">
 						<template v-if="dataList[index].list.length > 0 && !dataList[index].hasNomore">
 							<view class="text">已全部加载完毕</view>

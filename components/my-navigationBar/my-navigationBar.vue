@@ -112,7 +112,7 @@
 		left: 0;
 		right: 0;
 		z-index: 1000;
-		// background-color: rebeccapurple;
+		background-color: white;
 	}
 	
 	.nav-left{

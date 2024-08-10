@@ -177,6 +177,20 @@
 			{
 				"navigationBarTitleText" : "发布作品"
 			}
+		},
+		{
+			"path" : "subpkg/mines/myYuepai",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的约拍"
+			}
+		},
+		{
+			"path" : "subpkg/mines/myZuopin",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的作品相册"
+			}
 		}
 	], 
 	"globalStyle": {

@@ -35,7 +35,8 @@ const pageLoadMore = {
 			let item = {
 				list: [], //列表数据
 				time: '', //加载更多使用，为上一条数据的time
-				hasNomore: true //是否还有更多数据
+				hasNomore: true, //是否还有更多数据
+				no_data:false
 			}
 			return item
 		},
@@ -44,15 +45,6 @@ const pageLoadMore = {
 			if (this.selectedIndex !== index) {
 				this.selectedIndex = index
 			}
-		},
-		
-		tabItemData() {
-			let item = {
-				list: [], //列表数据
-				time: '', //加载更多使用，为上一条数据的time
-				hasNomore: true //是否还有更多数据
-			}
-			return item
 		},
 				
 		//选项卡点击
@@ -100,15 +92,23 @@ const pageLoadMore = {
 			this.dataList[this.selectedIndex].list = [...this.dataList[this.selectedIndex].list, ...res.result.data
 				.data
 			]
-			//判断是否还有更多数据
-			let nextTime = res.result.data.nexttime
-			let list = this.dataList[this.selectedIndex].list
-			let time = list[list.length - 1].updatetime
+			
+			if(this.dataList[this.selectedIndex].list.length === 0 && res.result.data.data.length === 0){
+				this.dataList[this.selectedIndex].no_data = true
+			}
+			else{
+				this.dataList[this.selectedIndex].no_data = false
+			}
+			
 			if(res.result.data.data.length === 0 || (nextTime === time && res.result.data.data.length < res.result
 				.data.count)){
 				this.dataList[this.selectedIndex].hasNomore = false
 				return
 			}
+			//判断是否还有更多数据
+			let nextTime = res.result.data.nexttime
+			let list = this.dataList[this.selectedIndex].list
+			let time = list[list.length - 1].updatetime
 			this.dataList[this.selectedIndex].time = nextTime
 		},
 		

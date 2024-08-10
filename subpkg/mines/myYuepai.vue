@@ -9,15 +9,15 @@
 		<swiper class="hor-swiper" :current="selectedIndex" :indicator-dots="false" :autoplay="false" @change="tabChange">
 			<swiper-item v-for="(item,index) in tabList" :key="index">
 				<scroll-view id="200" class="list-scroll" :scroll-y="true" @scrolltolower="scrolltolower" :lower-threshold="100" :scroll-anchoring="true"
-					refresher-enabled="true" :refresher-triggered="triggered" :refresher-threshold="100" @refresherrefresh="onRefresh" @refresherpulling="onPulling">
+					refresher-enabled="true" :refresher-triggered="triggered" :refresher-threshold="100" @refresherrefresh="onRefresh">
 					<view v-if="dataList[index] && dataList[index].list">
 						<view v-for="(item1,index1) in dataList[index].list" :key="index1">
 							<homePageCardItem :item="item1" @itemClick="itemClick(item1)"
 								@previewImage="previewImage"></homePageCardItem>
 						</view>
 					</view>
-					<view class="" v-if="dataList[index] && dataList[index].no_data">
-						<no-data no_data_text="当前暂无点赞～"></no-data> 
+					<view class="" v-if="dataList[index] && dataList[index].no_data"> 
+						<no-data no_data_text="当前暂无约拍～"></no-data> 
 					</view>
 					<view class="nomore-container" v-if="dataList[index] && dataList[index].list">
 						<template v-if="dataList[index].list.length > 0 && !dataList[index].hasNomore">
@@ -31,41 +31,45 @@
 </template>
 
 <script>
-	import { $pageLoadMore } from '../../static/mixin/page-load-more.js'
-	export default {
+	import { $pageLoadMore } from '../../static/mixin/page-load-more';
+	export default { 
 		mixins:[$pageLoadMore],
 		data() {
 			return {
-				
+				tabList:['全部','展示中','已关闭','审核失败']
 			};
 		},
-		
+
 		onLoad(options) {
-			let that = this
-			uni.$on('updateMinesDataList',function(){
-				//重置数据
-				that.dataList[that.selectedIndex] = that.tabItemData()
-				that.getDataList()
-			})
+			
 		},
 		
 		onUnload() {
-			uni.$off('updateMinesDataList')
+			
 		},
 		
-		methods:{
+		methods: {
 		  async	getDataList(){
-				let param = this.getRequestParam()
-				const { data: res } = await uni.$http.post(uni.$api.apiMyLike, param)
+				let param = Object.assign({},uni.$api.apiCommonRequestParam)
+				this.$set(param, 's_id',this.$store.state.s_id)
+				var status = 'all'
+				if(this.selectedIndex === 1){
+					status = 'opening'
+				}
+				else if(this.selectedIndex === 2){
+					status = 'closed'
+				}
+				else if(this.selectedIndex === 3){
+					status = 'audit_fail'
+				}
+				this.$set(param, 'status',status)
+				const { data: res } = await uni.$http.post(uni.$api.apiMyYuepai, param)
 				if (res.code !== '200') return uni.$showMsg()
 				this.stopLoading(res)
 			},
 			
 			itemClick(item){
-				var item_id = item.item_id
-				if (this.selectedIndex === 1) {
-					item_id += '&type=production'
-				}
+				let item_id = item.item_id
 				uni.$router.gotoDetail(item_id)
 			},
 			
@@ -86,5 +90,9 @@
 	}
 	.list-scroll{
 		height: 100%;
+	}
+	
+	.center-tab{
+		padding: 0px 20rpx;
 	}
 </style>

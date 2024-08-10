@@ -96,6 +96,18 @@ const router = {
 		this.navigateTo(url)
 	},
 	
+	//约拍列表
+	gotoMyYuepai(){
+		let url = '/subpkg/mines/myYuepai'
+		this.navigateTo(url)
+	},
+	
+	//作品列表
+	gotoMyZuopin(){
+		let url = '/subpkg/mines/myZuopin'
+		this.navigateTo(url)
+	},
+	
 	navigateTo(url){
 		uni.navigateTo({
 			url: url

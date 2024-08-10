@@ -8,6 +8,7 @@ import { $utils } from './utils/utils'
 import myLoading  from './components/loading/loading.vue'
 import store from './store/store'
 import myNavigationBar from './components/my-navigationBar/my-navigationBar.vue'
+import noData from './components/no-data/no-data.vue'
 
 //挂载到uni下 方便全局调用
 uni.$http = $http
@@ -79,6 +80,7 @@ export function createApp() {
   app.use(myLoading);
   app.component('myLoading',myLoading)
   app.component('my-navigationBar',myNavigationBar)
+  app.component('no-data',noData) 
   app.config.globalProperties.$store = store;
   return {
     app,

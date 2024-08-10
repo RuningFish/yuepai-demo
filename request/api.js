@@ -79,10 +79,18 @@ const api = {
 	apiZuoPinAddIndex:'/zuopin/apiAddIndex',
 	//发布约拍
 	apiAddYuepai:'/yuepai/apiAddYuepai',
+	//删除约拍
+	apiDeleteYuepaiItem:'/yuepai/apiDeleteItem',
+	//删除作品
+	apiDeleteZuoPinItem:'/zuopin/apiDeleteItem',
 	//发布作品
 	apiAddZuoPin:'/zuopin/apiAddZuopin',
 	//我的约拍status:all 全部 opening展示中 closed 已关闭 audit_fail 审核失败
-	apiMyYuepai:'/yuepai/apiMyYuepai'
+	apiMyYuepai:'/yuepai/apiMyYuepai',
+	//我的作品status:all 全部 pass已发布 wait审核中 fail 未通过
+	apiMyZuopin:'/zuopin/apiMyZuopin',
+	//消息数
+	apiMessageIndex:'/message/apiMessageIndex'
 }
 
 export const $api = api

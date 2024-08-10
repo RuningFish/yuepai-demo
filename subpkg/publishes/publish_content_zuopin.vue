@@ -47,21 +47,18 @@
 						<text class="title">拍摄设备</text>
 						<view class="item-right">
 							<input class="right-text" placeholder="请填写拍摄设备(选填)" @input="deviceChange"></input>
-							<!-- <uni-icons type="right" size="18" color="white"></uni-icons> -->
 						</view>
 					</view>
 					<view class="item-title-">
 						<text class="title">拍摄地点</text>
 						<view class="item-right">
 							<input class="right-text" placeholder="请填写拍摄地点(选填)" @input="locationChange"></input>
-							<!-- <uni-icons type="right" size="18" color="white"></uni-icons> -->
 						</view>
 					</view>
 					<view class="item-title-" :class="`item-title-last`">
 						<text class="title">约拍返片</text>
 						<view class="item-right" style="display: flex;align-items: center;justify-content: end;">
 							<input class="right-text" disabled="true" placeholder="是否约拍返片?"></input>
-							<!-- <uni-icons type="right" size="18" color="white"></uni-icons> -->
 							<switch color="#fe5457" @change="switchChange" style="transform: scale(0.7);" />
 						</view>
 					</view>
@@ -125,15 +122,6 @@
 				var {
 					data: res
 				} = await uni.$http.post(uni.$api.apiZuoPinAddIndex, param)
-				res = {
-					"code": "200",
-					"msg": "ok",
-					"result": {
-						"status": 2,
-						"message": "请30分钟以后再发布！",
-						"data": {}
-					}
-				}
 				if(res.code !== '200') return uni.$showMsg()
 				if(res.result.status === 1){
 					//可以发布		
@@ -335,7 +323,7 @@
 			font-weight: 400;
 			padding-top: 18rpx;
 			padding-bottom: 18rpx;
-			border-bottom: 0.5rpx solid rgba(0, 0, 0, 0.02); //rgba(133, 234, 198, 1);
+			border-bottom: 0.5rpx solid rgba(0, 0, 0, 0.02); 
 			color: #333;
 		}
 
@@ -442,7 +430,6 @@
 	}
 
 	.publish-button {
-		// margin-top: 100rpx;
 		height: 80rpx;
 		width: 500rpx;
 		line-height: 80rpx;

@@ -1,13 +1,15 @@
 <template>
 	<!-- #ifdef APP-PLUS -->
-	<my-navigationBar @navRightIconClick="navRightIconClick" titleColor="#00c6ca" rightIcon="/static/icons/icon_mine_setting.png">
-		
+	<my-navigationBar @navRightIconClick="navRightIconClick" titleColor="#00c6ca"
+		rightIcon="/static/icons/icon_mine_setting.png">
+
 	</my-navigationBar>
 	<!-- #endif -->
-	
+
 	<!-- #ifdef MP-WEIXIN -->
-	<my-navigationBar @navLeftIconClick="navLeftIconClick" titleColor="#00c6ca" leftIcon="/static/icons/icon_mine_setting.png">
-		
+	<my-navigationBar @navLeftIconClick="navLeftIconClick" titleColor="#00c6ca"
+		leftIcon="/static/icons/icon_mine_setting.png">
+
 	</my-navigationBar>
 	<!-- #endif -->
 	<scroll-view class="hide-scrollbar" scroll-y="true" show-scrollbar="false">
@@ -204,99 +206,105 @@
 			itemClick(title) {
 				if (title === '帮助中心') {
 					this.saveLoginId({
-			"s_id": "c161e78d4e6b2dc4ee664bee02ab5bb1",
-			"user_id": "1e79b70be98a7525323a9265ff092ef8"
-		})
+						"s_id": "c161e78d4e6b2dc4ee664bee02ab5bb1",
+						"user_id": "1e79b70be98a7525323a9265ff092ef8"
+					})
 				} else if (title === '关于我们') {
 					uni.$router.gotoAbout()
 				} else if (title === '开具发票') {
-			
+
 				}
 				//查看登陆状态
-				else if (this.$store.state.s_id === '') {
-					this.gotoLogin()
-					return
+				else {
+					if (this.$store.state.s_id === '') {
+						this.gotoLogin()
+						return
+					}
+					
+					if (title === '我的约拍') {
+						uni.$router.gotoMyYuepai()
+					}
 				}
 			},
 
-			gotoLogin() {
-				uni.$router.gotoWxLogin()
-			},
+				gotoLogin() {
+						uni.$router.gotoWxLogin()
+					},
 
-			async getUserInfo() {
-				if (this.$store.state.s_id === '') {
-					this.userInfo = {}
-					this.saveUserInfo({})
-					return
-				}
-				let param = uni.$api.apiCommonRequestParam
-				this.$set(param, 's_id', this.$store.state.s_id)
-				const {
-					data: res
-				} = await uni.$http.post(uni.$api.apiUserIndex, param, false)
-				if (res.code !== '200') return uni.$showMsg()
-				if (res.result.status === 1) {
-					//请求成功
-					this.userInfo = res.result.data
-				} else {
-					uni.$showMsg(res.result.message)
-					this.userInfo = {}
-					this.saveLoginId({})
-				}
-				this.saveUserInfo(this.userInfo)
-			},
+					async getUserInfo() {
+							if (this.$store.state.s_id === '') {
+								this.userInfo = {}
+								this.saveUserInfo({})
+								return
+							}
+							let param = uni.$api.apiCommonRequestParam
+							this.$set(param, 's_id', this.$store.state.s_id)
+							const {
+								data: res
+							} = await uni.$http.post(uni.$api.apiUserIndex, param, false)
+							if (res.code !== '200') return uni.$showMsg()
+							if (res.result.status === 1) {
+								//请求成功
+								this.userInfo = res.result.data
+							} else {
+								uni.$showMsg(res.result.message)
+								this.userInfo = {}
+								this.saveLoginId({})
+							}
+							this.saveUserInfo(this.userInfo)
+						},
 
-			gotoUserHomePage() {
-				let user_id = this.$store.state.user_id + '&mine=true'
-				uni.$router.gotoUserHomePage(user_id)
-			},
+						gotoUserHomePage() {
+							let user_id = this.$store.state.user_id + '&mine=true'
+							uni.$router.gotoUserHomePage(user_id)
+						},
 
-			//我的作品/收藏/点赞/历史点击
-			mineItemsClick(title) {
-				if (this.$store.state.s_id === '') {
-					this.gotoLogin()
-					return
-				}
-				let url = ''
-				if (title === '我的作品') {
-					this.$store.state.isLoading = !this.$store.state.isLoading
-				} else if (title === '我的收藏') {
-					uni.$router.gotoMyCollect()
-				} else if (title === '我的点赞') {
-					uni.$router.gotoMyLike()
-				} else if (title === '浏览历史') {
-					uni.$router.gotoMyViewed()
-				}
-			},
+						//我的作品/收藏/点赞/历史点击
+						mineItemsClick(title) {
+							if (this.$store.state.s_id === '') {
+								this.gotoLogin()
+								return
+							}
+							let url = ''
+							if (title === '我的作品') {
+								uni.$router.gotoMyZuopin()
+							} else if (title === '我的收藏') {
+								uni.$router.gotoMyCollect()
+							} else if (title === '我的点赞') {
+								uni.$router.gotoMyLike()
+							} else if (title === '浏览历史') {
+								uni.$router.gotoMyViewed()
+							}
+						},
 
-			//我的关注
-			myFollowUser() {
-				uni.$router.gotoMyFollowUser()
-			},
-			
-			navLeftIconClick(){
-				console.log('navLeftIconClick')
-				if (this.$store.state.s_id === '') {
-					this.gotoLogin()
-					return
-				}
-				uni.$router.gotoSetting()
-			},
-			
-			navRightIconClick(){
-				console.log('navRightIconClick')
-				if (this.$store.state.s_id === '') {
-					this.gotoLogin()
-					return 
-				}
-				uni.$router.gotoSetting()
-			},
-			
-			avatarClick(){
-				uni.$router.gotoEditUserInfo()
+						//我的关注
+						myFollowUser() {
+							uni.$router.gotoMyFollowUser()
+						},
+
+						navLeftIconClick() {
+							console.log('navLeftIconClick')
+							if (this.$store.state.s_id === '') {
+								this.gotoLogin()
+								return
+							}
+							uni.$router.gotoSetting()
+						},
+
+						navRightIconClick() {
+							console.log('navRightIconClick')
+							if (this.$store.state.s_id === '') {
+								this.gotoLogin()
+								return
+							}
+							uni.$router.gotoSetting()
+						},
+
+						avatarClick() {
+							uni.$router.gotoEditUserInfo()
+						}
 			}
 		}
-	}
 </script>
 
 <style lang="scss">
@@ -307,13 +315,13 @@
 		// height: calc(100vh - 110rpx - env(safe-area-inset-bottom)*0.4); // 兼容 IOS>11.2
 
 		::-webkit-scrollbar {
-		    display: none;
-		    width: 0 !important;
-		    height: 0 !important;
-		    -webkit-appearance: none;
-		    background: transparent;
-		    color: transparent;
-		  }
+			display: none;
+			width: 0 !important;
+			height: 0 !important;
+			-webkit-appearance: none;
+			background: transparent;
+			color: transparent;
+		}
 	}
 
 	.not-login-info {
@@ -533,12 +541,13 @@
 			}
 		}
 	}
-	
-	.navBox{
+
+	.navBox {
 		display: flex;
 		align-items: center;
 		background-color: greenyellow;
 	}
+
 	// .nav-left{
 	// 	margin-top:5px;
 	// 	height: 30px;

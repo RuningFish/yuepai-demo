@@ -35,11 +35,10 @@
 				const {
 					data: res
 				} = await uni.$http.post(uni.$api.apiGetPubInfo, param)
-				// if(res.code !== '200') return uni.$showMsg()
-				// if(res.result.status === 1){
-				// 	this.dataList = res.result.data.types
-				// }
-				this.dataList = res.types
+				if(res.code !== '200') return uni.$showMsg()
+				if(res.result.status === 1){
+					this.dataList = res.result.data.types
+				}
 			},
 			
 			gotoPublishContent(index){ 
